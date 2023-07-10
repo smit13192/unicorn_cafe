@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "726827495376",
+    "project_id": "unicorn-cafe-a22d2",
+    "storage_bucket": "unicorn-cafe-a22d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726827495376:android:24167c00302434c048d3d5",
+        "android_client_info": {
+          "package_name": "com.example.unicorn_cafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726827495376-5fjgftro1en8rbe5ro0paflpk5db8aho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa68vglWa_fki3qcu8UhKbzuCKOsOSKQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726827495376-5fjgftro1en8rbe5ro0paflpk5db8aho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
