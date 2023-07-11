@@ -1,1 +1,3 @@
-abstract class AppString {}
+abstract class AppString {
+  static const String fontFamily = 'Roboto';
+}
