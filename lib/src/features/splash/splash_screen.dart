@@ -31,9 +31,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 300),
     );
     animation = Tween(begin: 0.0, end: 250.0).animate(animationController);
-    animationController.addListener(() {
-      setState(() {});
-    });
     animationController.forward();
   }
 
@@ -43,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: AppColor.black,
       body: Center(
         child: AnimatedBuilder(
-          animation: animationController,
+          animation: animation,
           builder: (context, child) {
             return Image.asset(
               AppImage.logo,
