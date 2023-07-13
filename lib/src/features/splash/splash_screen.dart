@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
+import 'package:unicorn_cafe/src/config/storage/app_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,18 +21,26 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoute.homeScreen,
-      );
-    });
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
     animation = Tween(begin: 0.0, end: 250.0).animate(animationController);
     animationController.forward();
+    goToNextPage();
+  }
+
+  goToNextPage() async {
+    AppStorage appStorage = AppStorage();
+    NavigatorState navigatorState = Navigator.of(context);
+    Timer(const Duration(seconds: 3), () async {
+      bool value = await appStorage.getOnBordingCompelete();
+      if (value) {
+        navigatorState.pushReplacementNamed(AppRoute.loginScreen);
+      } else {
+        navigatorState.pushReplacementNamed(AppRoute.onBoardingScreen);
+      }
+    });
   }
 
   @override
