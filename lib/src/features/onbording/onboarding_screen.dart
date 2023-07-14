@@ -46,8 +46,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AspectRatio(
-              aspectRatio: 100.w / (100.w * 1.29),
+            SizedBox(
+              height: 70.h,
               child: PageView(
                 onPageChanged: (value) => setState(() {
                   currentPosition = value;
@@ -59,36 +59,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   _SecondView(),
                   _ThirdView(),
                 ],
-              ),
-            ),
-            const Spacer(flex: 1),
-            Text(
-              currentPosition == 0
-                  ? 'All You Need Coffee'
-                  : currentPosition == 1
-                      ? 'Unicorn Dark9'
-                      : 'Life happens, coffee helps',
-              style: const TextStyle(
-                color: AppColor.kE8B35A,
-                fontSize: 25,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 1.2.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-              child: Text(
-                currentPosition == 0
-                    ? 'The flavour that brings life to your body in the morning'
-                    : currentPosition == 1
-                        ? 'Coffee cups set vector top view different types of coffee'
-                        : 'May your coffee be strong and your Monday be short` Sip sip, hooray!',
-                style: const TextStyle(
-                  color: AppColor.white,
-                  fontSize: 15,
-                ),
-                textAlign: TextAlign.center,
               ),
             ),
             const Spacer(flex: 2),
@@ -139,34 +109,65 @@ class __FirstViewState extends State<_FirstView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AnimatedBuilder(
-          animation: fadeAnimation,
-          builder: (context, child) {
-            return Positioned.fill(
-              top: -50 + (fadeAnimation.value * 50),
-              child: FadeTransition(
-                opacity: fadeAnimation,
-                child: Image.asset(
-                  AppImage.bg1,
-                  fit: BoxFit.fitWidth,
-                ),
+        AspectRatio(
+          aspectRatio: 100.w / (100.w * 1.29),
+          child: Stack(
+            children: [
+              AnimatedBuilder(
+                animation: fadeAnimation,
+                builder: (context, child) {
+                  return Positioned.fill(
+                    top: -50 + (fadeAnimation.value * 50),
+                    child: FadeTransition(
+                      opacity: fadeAnimation,
+                      child: Image.asset(
+                        AppImage.bg1,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+              AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Positioned.fill(
+                    top: animation.value,
+                    child: Transform.rotate(
+                      angle: -0.1,
+                      child: Image.asset(AppImage.coffeeCup1),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-        AnimatedBuilder(
-          animation: animation,
-          builder: (context, child) {
-            return Positioned.fill(
-              top: animation.value,
-              child: Transform.rotate(
-                angle: -0.1,
-                child: Image.asset(AppImage.coffeeCup1),
-              ),
-            );
-          },
+        const Spacer(),
+        const Text(
+          'All You Need Coffee',
+          style: TextStyle(
+            color: AppColor.kE8B35A,
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 1.2.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: const Text(
+            'The flavour that brings life to your body in the morning',
+            style: TextStyle(
+              color: AppColor.white,
+              fontSize: 15,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );
@@ -206,34 +207,65 @@ class __SecondViewState extends State<_SecondView>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AnimatedBuilder(
-          animation: fadeAnimation,
-          builder: (context, child) {
-            return Positioned.fill(
-              top: -50 + (fadeAnimation.value * 50),
-              child: FadeTransition(
-                opacity: fadeAnimation,
-                child: Image.asset(
-                  AppImage.bg2,
-                  fit: BoxFit.fitWidth,
-                ),
+        AspectRatio(
+          aspectRatio: 100.w / (100.w * 1.29),
+          child: Stack(
+            children: [
+              AnimatedBuilder(
+                animation: fadeAnimation,
+                builder: (context, child) {
+                  return Positioned.fill(
+                    top: -50 + (fadeAnimation.value * 50),
+                    child: FadeTransition(
+                      opacity: fadeAnimation,
+                      child: Image.asset(
+                        AppImage.bg2,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+              AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Positioned.fill(
+                    top: animation.value,
+                    child: Transform.rotate(
+                      angle: -0.15,
+                      child: Image.asset(AppImage.coffeeCup2),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-        AnimatedBuilder(
-          animation: animation,
-          builder: (context, child) {
-            return Positioned.fill(
-              top: animation.value,
-              child: Transform.rotate(
-                angle: -0.15,
-                child: Image.asset(AppImage.coffeeCup2),
-              ),
-            );
-          },
+        const Spacer(),
+        const Text(
+          'Unicorn Dark9',
+          style: TextStyle(
+            color: AppColor.kE8B35A,
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 1.2.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: const Text(
+            'Coffee cups set vector top view different types of coffee',
+            style: TextStyle(
+              color: AppColor.white,
+              fontSize: 15,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );
@@ -280,29 +312,60 @@ class __ThirdViewState extends State<_ThirdView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AnimatedBuilder(
-          animation: fadeAnimation,
-          builder: (context, child) {
-            return Positioned.fill(
-              child: FadeTransition(
-                opacity: fadeAnimation,
-                child: Image.asset(
-                  AppImage.bg3,
-                  fit: BoxFit.fitWidth,
+        AspectRatio(
+          aspectRatio: 100.w / (100.w * 1.29),
+          child: Stack(
+            children: [
+              AnimatedBuilder(
+                animation: fadeAnimation,
+                builder: (context, child) {
+                  return Positioned.fill(
+                    child: FadeTransition(
+                      opacity: fadeAnimation,
+                      child: Image.asset(
+                        AppImage.bg3,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Positioned.fill(
+                child: Transform.scale(
+                  scale: 0.93,
+                  child: RotationTransition(
+                    turns: rotationAnimation,
+                    child: Image.asset(AppImage.coffeeCup3),
+                  ),
                 ),
               ),
-            );
-          },
+            ],
+          ),
         ),
-        Positioned.fill(
-          child: Transform.scale(
-            scale: 0.93,
-            child: RotationTransition(
-              turns: rotationAnimation,
-              child: Image.asset(AppImage.coffeeCup3),
+        const Spacer(),
+        const Text(
+          'Life happens, coffee helps',
+          style: TextStyle(
+            color: AppColor.kE8B35A,
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 1.2.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: const Text(
+            'May your coffee be strong and your Monday be short` Sip sip, hooray!',
+            style: TextStyle(
+              color: AppColor.white,
+              fontSize: 15,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ],

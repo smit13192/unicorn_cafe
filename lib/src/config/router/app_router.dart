@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
-import 'package:unicorn_cafe/src/features/onbording/onbording_screen.dart';
+import 'package:unicorn_cafe/src/features/onbording/onboarding_screen.dart';
 import 'package:unicorn_cafe/src/features/splash/splash_screen.dart';
 
 part 'app_route.dart';
