@@ -3,6 +3,7 @@ import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/storage/app_storage.dart';
+import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -45,8 +46,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 531,
+            AspectRatio(
+              aspectRatio: 100.w / (100.w * 1.29),
               child: PageView(
                 onPageChanged: (value) => setState(() {
                   currentPosition = value;
@@ -60,37 +61,45 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ],
               ),
             ),
-            const Spacer(flex: 2),
-            const Text(
-              'All You Need Coffee',
-              style: TextStyle(
+            const Spacer(flex: 1),
+            Text(
+              currentPosition == 0
+                  ? 'All You Need Coffee'
+                  : currentPosition == 1
+                      ? 'Unicorn Dark9'
+                      : 'Life happens, coffee helps',
+              style: const TextStyle(
                 color: AppColor.kE8B35A,
                 fontSize: 25,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+            SizedBox(height: 1.2.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
               child: Text(
-                'The flavour that brings life to your body in the morning',
-                style: TextStyle(
+                currentPosition == 0
+                    ? 'The flavour that brings life to your body in the morning'
+                    : currentPosition == 1
+                        ? 'Coffee cups set vector top view different types of coffee'
+                        : 'May your coffee be strong and your Monday be short` Sip sip, hooray!',
+                style: const TextStyle(
                   color: AppColor.white,
-                  fontSize: 17,
+                  fontSize: 15,
                 ),
                 textAlign: TextAlign.center,
               ),
             ),
-            const Spacer(flex: 3),
+            const Spacer(flex: 2),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: AppButton(
                 text: currentPosition == 2 ? 'Get Started' : 'Next',
                 onPressed: onPressed,
               ),
             ),
-            const Spacer(flex: 5),
+            const Spacer(flex: 4),
           ],
         ),
       ),
