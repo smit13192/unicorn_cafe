@@ -4,7 +4,6 @@ import 'package:unicorn_cafe/app/app.dart';
 
 import 'firebase_options.dart';
 
-late Size size;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

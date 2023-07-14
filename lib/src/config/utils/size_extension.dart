@@ -1,4 +1,4 @@
-import 'package:unicorn_cafe/main.dart';
+import 'package:unicorn_cafe/app/app.dart';
 
 extension SizeExtension on num {
   double get h {

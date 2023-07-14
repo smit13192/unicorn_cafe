@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_cafe/main.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
+
+late Size size;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
