@@ -47,7 +47,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: 70.h,
+              height: 75.h,
               child: PageView(
                 onPageChanged: (value) => setState(() {
                   currentPosition = value;
