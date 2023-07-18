@@ -29,7 +29,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     NavigatorState navigatorState = Navigator.of(context);
     if (currentPosition == 2) {
       appStorage.setOnBordingCompelete(true);
-      navigatorState.pushReplacementNamed(AppRoute.loginScreen);
+      navigatorState.pushReplacementNamed(AppRoute.googlelogin);
     } else {
       pageController.nextPage(
         duration: const Duration(milliseconds: 500),

@@ -61,7 +61,7 @@ class _LoginView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 45),
+                const SizedBox(height: 30),
                 const Text(
                   'Welcome Back,',
                   textAlign: TextAlign.left,
@@ -80,7 +80,7 @@ class _LoginView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 const _EmailTextField(),
                 const SizedBox(height: 30),
                 const _PasswordTextField(),

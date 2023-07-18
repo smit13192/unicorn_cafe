@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 3), () async {
       bool value = await appStorage.getOnBordingCompelete();
       if (value) {
-        navigatorState.pushReplacementNamed(AppRoute.loginScreen);
+        navigatorState.pushReplacementNamed(AppRoute.googlelogin);
       } else {
         navigatorState.pushReplacementNamed(AppRoute.onBoardingScreen);
       }
