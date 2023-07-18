@@ -2,26 +2,26 @@ part of 'app_color.dart';
 
 abstract class AppMaterialColor {
   static const MaterialColor materialColor =
-      MaterialColor(_primarycolorPrimaryValue, <int, Color>{
-    50: Color(0xFFEAE5E0),
-    100: Color(0xFFCCBDB3),
-    200: Color(0xFFAA9180),
-    300: Color(0xFF87654D),
-    400: Color(0xFF6E4426),
-    500: Color(_primarycolorPrimaryValue),
-    600: Color(0xFF4D1F00),
-    700: Color(0xFF431A00),
-    800: Color(0xFF3A1500),
-    900: Color(0xFF290C00),
+      MaterialColor(_materialColorPrimaryValue, <int, Color>{
+    50: Color(0xFFFCF6EB),
+    100: Color(0xFFF8E8CE),
+    200: Color(0xFFF4D9AD),
+    300: Color(0xFFEFCA8C),
+    400: Color(0xFFEBBE73),
+    500: Color(_materialColorPrimaryValue),
+    600: Color(0xFFE5AC52),
+    700: Color(0xFFE2A348),
+    800: Color(0xFFDE9A3F),
+    900: Color(0xFFD88B2E),
   });
-  static const int _primarycolorPrimaryValue = 0xFF542300;
+  static const int _materialColorPrimaryValue = 0xFFE8B35A;
 
-  static const MaterialColor primaryColorAccent =
-      MaterialColor(_primarycolorAccentValue, <int, Color>{
-    100: Color(0xFFFF7A63),
-    200: Color(_primarycolorAccentValue),
-    400: Color(0xFFFC2500),
-    700: Color(0xFFE32200),
+  static const MaterialColor materialColorAccent =
+      MaterialColor(_materialColorAccentValue, <int, Color>{
+    100: Color(0xFFFFFFFF),
+    200: Color(_materialColorAccentValue),
+    400: Color(0xFFFFDBB4),
+    700: Color(0xFFFFCF9B),
   });
-  static const int _primarycolorAccentValue = 0xFFFF4F30;
+  static const int _materialColorAccentValue = 0xFFFFF4E7;
 }
