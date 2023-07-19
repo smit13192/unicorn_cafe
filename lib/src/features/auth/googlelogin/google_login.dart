@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
+import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 
 class GoogleLoginScreen extends StatelessWidget {
   const GoogleLoginScreen({super.key});
@@ -21,9 +23,10 @@ class _GoogleLoginView extends StatelessWidget {
       backgroundColor: AppColor.black,
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Image.asset(
-              AppImage.googlelogin,
+              AppImage.googleLogin,
               fit: BoxFit.fitWidth,
             ),
             const Text(
@@ -32,14 +35,15 @@ class _GoogleLoginView extends StatelessWidget {
                 color: AppColor.kE8B35A,
                 fontSize: 22,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 50),
+            SizedBox(height: 5.50.h),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 48),
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FilledButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -56,9 +60,9 @@ class _GoogleLoginView extends StatelessWidget {
                         BorderSide.none,
                       ),
                       padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(
-                          horizontal: 35,
-                          vertical: 15,
+                        EdgeInsets.symmetric(
+                          horizontal: 8.5.w,
+                          vertical: 2.h,
                         ),
                       ),
                     ),
@@ -88,9 +92,9 @@ class _GoogleLoginView extends StatelessWidget {
                         const BorderSide(color: AppColor.kE8B35A),
                       ),
                       padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(
-                          horizontal: 35,
-                          vertical: 15,
+                        EdgeInsets.symmetric(
+                          horizontal: 8.5.w,
+                          vertical: 2.h,
                         ),
                       ),
                     ),
@@ -106,12 +110,12 @@ class _GoogleLoginView extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 3.h,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: FilledButton(
+              padding: EdgeInsets.symmetric(horizontal: 7.w),
+              child: ElevatedButton.icon(
                 onPressed: () {},
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
@@ -123,28 +127,24 @@ class _GoogleLoginView extends StatelessWidget {
                     BorderSide.none,
                   ),
                   padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(
-                      horizontal: 35,
-                      vertical: 10,
+                    EdgeInsets.symmetric(
+                      horizontal: 8.5.w,
+                      vertical: 1.5.h,
                     ),
                   ),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(
-                      Icons.facebook,
-                      size: 40,
-                    ),
-                    Text(
-                      'Continue With Google',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ],
+                icon: const Icon(
+                  FontAwesomeIcons.google,
+                  size: 35,
+                  color: AppColor.white,
+                ),
+                label: const Text(
+                  'Continue With Google',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
             ),

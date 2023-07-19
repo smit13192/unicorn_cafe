@@ -5,9 +5,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/formz_status.dart';
+import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/auth/login/bloc/login_bloc.dart';
 import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
+import 'package:unicorn_cafe/src/widget/gap.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -55,13 +57,13 @@ class _LoginView extends StatelessWidget {
           centerTitle: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
+          padding: EdgeInsets.symmetric(horizontal: 5.5.w),
           child: Form(
             key: _key,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 30),
+                const GapH(3.5),
                 const Text(
                   'Welcome Back,',
                   textAlign: TextAlign.left,
@@ -80,11 +82,11 @@ class _LoginView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 30),
+                const GapH(3.5),
                 const _EmailTextField(),
-                const SizedBox(height: 30),
+                const GapH(3.5),
                 const _PasswordTextField(),
-                const SizedBox(height: 15),
+                const GapH(1.5),
                 const Text(
                   'Forgot Password?',
                   textAlign: TextAlign.end,
@@ -94,7 +96,7 @@ class _LoginView extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const GapH(3),
                 AppButton(
                   text: 'Sign in',
                   onPressed: () {
@@ -134,8 +136,8 @@ class _EmailTextField extends StatelessWidget {
       decoration: const InputDecoration(
         hintText: 'Enter Email',
         hintStyle: TextStyle(
-          color: AppColor.white,
-          fontSize: 20,
+          color: AppColor.grey,
+          fontSize: 18,
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColor.white),
@@ -178,8 +180,8 @@ class _PasswordTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'Enter Password',
         hintStyle: const TextStyle(
-          color: AppColor.white,
-          fontSize: 20,
+          color: AppColor.grey,
+          fontSize: 18,
         ),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: AppColor.white),

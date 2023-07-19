@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unicorn_cafe/src/config/utils/either_result.dart';
 import 'package:unicorn_cafe/src/config/utils/formz_status.dart';
 import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
 
@@ -82,20 +83,27 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     RegisterSubmitEvent event,
     Emitter<RegisterState> emit,
   ) async {
-    try {
-      emit(state.copyWith(status: FormzStatus.loading));
-      UserCredential userCredential =
-          await _firebaseAuthService.sighIn(state.email, state.password);
-      if (userCredential.user == null) {
+    emit(state.copyWith(status: FormzStatus.loading));
+    EitherResult<UserCredential> result =
+        await _firebaseAuthService.sighIn(state.email, state.password);
+    result.fold((error) {
+      emit(
         state.copyWith(
           status: FormzStatus.failed,
-          error: 'Some error occurred',
+          error: error,
+        ),
+      );
+    }, (userCredential) {
+      if (userCredential.user == null) {
+        emit(
+          state.copyWith(
+            status: FormzStatus.failed,
+            error: 'Some error occurred',
+          ),
         );
         return;
       }
       emit(state.copyWith(status: FormzStatus.success));
-    } catch (e) {
-      emit(state.copyWith(status: FormzStatus.failed, error: e.toString()));
-    }
+    });
   }
 }

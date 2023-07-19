@@ -1,23 +1,34 @@
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:unicorn_cafe/src/config/utils/either_result.dart';
 
 class FirebaseAuthService {
-  Future<UserCredential> logIn(String email, String password) async {
+  Future<EitherResult<UserCredential>> logIn(
+    String email,
+    String password,
+  ) async {
     try {
-      return FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      return right(userCredential);
     } catch (e) {
-      rethrow;
+      return left(e.toString());
     }
   }
 
-  Future<UserCredential> sighIn(String email, String password) async {
+  Future<EitherResult<UserCredential>> sighIn(
+    String email,
+    String password,
+  ) async {
     try {
-      return FirebaseAuth.instance
+      UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      return right(userCredential);
     } catch (e) {
-      rethrow;
+      return left(e.toString());
     }
   }
 }
