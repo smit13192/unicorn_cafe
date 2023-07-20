@@ -48,6 +48,7 @@ dependencies:
   fluttertoast: ^8.2.2
   dartz: ^0.10.1
   fpdart: ^0.6.0
+  google_sign_in: ^6.1.4
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -316,7 +314,6 @@ class _ConfirmPasswordTextField extends StatelessWidget {
             .add(ConfirmPasswordChangedEvent(value.trim()));
       },
       validator: (value) {
-        log('password');
         if (value != password) {
           return 'Password is not match';
         }

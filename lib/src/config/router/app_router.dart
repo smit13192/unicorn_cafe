@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_cafe/src/features/auth/googlelogin/google_login.dart';
+import 'package:unicorn_cafe/src/features/auth/googlelogin/google_login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
