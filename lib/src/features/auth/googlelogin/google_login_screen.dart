@@ -9,6 +9,8 @@ import 'package:unicorn_cafe/src/config/utils/formz_status.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/auth/googlelogin/bloc/google_login_bloc.dart';
 import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
+import 'package:unicorn_cafe/src/widget/app_button.dart';
+import 'package:unicorn_cafe/src/widget/gap.dart';
 
 class GoogleLoginScreen extends StatelessWidget {
   const GoogleLoginScreen({super.key});
@@ -40,7 +42,7 @@ class _GoogleLoginView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColor.black,
+        backgroundColor: AppColor.scaffoldBackgroundColor,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -52,7 +54,7 @@ class _GoogleLoginView extends StatelessWidget {
               const Text(
                 'Get The Best Caffee In Town!',
                 style: TextStyle(
-                  color: AppColor.kE8B35A,
+                  color: AppColor.primaryColor,
                   fontSize: 22,
                 ),
                 textAlign: TextAlign.center,
@@ -63,67 +65,50 @@ class _GoogleLoginView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoute.registerScreen,
-                        );
-                      },
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        side: MaterialStateProperty.all(
-                          BorderSide.none,
-                        ),
-                        padding: MaterialStateProperty.all(
-                          EdgeInsets.symmetric(
-                            horizontal: 8.5.w,
-                            vertical: 2.h,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300,
-                        ),
+                    Expanded(
+                      child: AppButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.registerScreen,
+                          );
+                        },
+                        text: 'Sigh Up',
                       ),
                     ),
-                    OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoute.loginScreen,
-                        );
-                      },
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                    const GapW(5),
+                    Expanded(
+                      child: Material(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(30),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoute.loginScreen,
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                width: 2,
+                                color: AppColor.primaryColor,
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Sigh In',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: AppColor.primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        side: MaterialStateProperty.all(
-                          const BorderSide(color: AppColor.kE8B35A),
-                        ),
-                        padding: MaterialStateProperty.all(
-                          EdgeInsets.symmetric(
-                            horizontal: 8.5.w,
-                            vertical: 2.h,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300,
                         ),
                       ),
                     ),
@@ -135,37 +120,35 @@ class _GoogleLoginView extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 7.w),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    context.read<GoogleLoginBloc>().add(GoogleLoginEvent());
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                child: Material(
+                  color: AppColor.primaryColor,
+                  borderRadius: BorderRadius.circular(30),
+                  child: InkWell(
+                    onTap: () {
+                      context.read<GoogleLoginBloc>().add(GoogleLoginEvent());
+                    },
+                    borderRadius: BorderRadius.circular(30),
+                    child: const SizedBox(
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.google,
+                            size: 27,
+                            color: AppColor.white,
+                          ),
+                          GapW(2.5),
+                          Text(
+                            'Continue With Google',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    side: MaterialStateProperty.all(
-                      BorderSide.none,
-                    ),
-                    padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(
-                        horizontal: 8.5.w,
-                        vertical: 1.5.h,
-                      ),
-                    ),
-                  ),
-                  icon: const Icon(
-                    FontAwesomeIcons.google,
-                    size: 35,
-                    color: AppColor.white,
-                  ),
-                  label: const Text(
-                    'Continue With Google',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300,
                     ),
                   ),
                 ),

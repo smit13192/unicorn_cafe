@@ -40,14 +40,15 @@ class _RegisterView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColor.black,
+        backgroundColor: AppColor.scaffoldBackgroundColor,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Text(
             'Sign Up',
             style: TextStyle(
-              color: AppColor.kE8B35A,
+              color: AppColor.primaryColor,
               fontSize: 25,
               fontWeight: FontWeight.w500,
             ),
@@ -67,26 +68,6 @@ class _RegisterView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const GapH(3.5),
-                    const Text(
-                      'Welcome,',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: AppColor.kE8B35A,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      'SignUp to start your new Journey',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: AppColor.kE8B35A,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const GapH(3.5),
                     const _FullNameTextField(),
                     const GapH(3.5),
                     const _EmailTextField(),
@@ -127,7 +108,6 @@ class _FullNameTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.text,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context.read<RegisterBloc>().add(UsernameChangedEvent(value.trim()));
       },
@@ -139,18 +119,6 @@ class _FullNameTextField extends StatelessWidget {
       },
       decoration: const InputDecoration(
         hintText: 'Enter Username',
-        hintStyle: TextStyle(
-          color: AppColor.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
       ),
     );
   }
@@ -165,7 +133,6 @@ class _EmailTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.emailAddress,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context.read<RegisterBloc>().add(EmailChangedEvent(value.trim()));
       },
@@ -180,18 +147,6 @@ class _EmailTextField extends StatelessWidget {
       },
       decoration: const InputDecoration(
         hintText: 'Enter Email',
-        hintStyle: TextStyle(
-          color: Colors.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
       ),
     );
   }
@@ -206,7 +161,6 @@ class _MobileNumberTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.phone,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context.read<RegisterBloc>().add(PhoneNoChangedEvent(value.trim()));
       },
@@ -219,18 +173,6 @@ class _MobileNumberTextField extends StatelessWidget {
       },
       decoration: const InputDecoration(
         hintText: 'Enter Mobile Number',
-        hintStyle: TextStyle(
-          color: AppColor.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
       ),
     );
   }
@@ -248,7 +190,6 @@ class _PasswordTextField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.visiblePassword,
       obscureText: obscureText,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context.read<RegisterBloc>().add(PasswordChangedEvent(value.trim()));
       },
@@ -262,31 +203,13 @@ class _PasswordTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: 'Enter Password',
-        hintStyle: const TextStyle(
-          color: AppColor.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
         suffixIcon: IconButton(
           onPressed: () {
             context.read<RegisterBloc>().add(PasswordToggleEvent());
           },
           icon: obscureText
-              ? const Icon(
-                  Icons.visibility,
-                  color: Colors.white,
-                )
-              : const Icon(
-                  Icons.visibility_off,
-                  color: Colors.white,
-                ),
+              ? const Icon(Icons.visibility)
+              : const Icon(Icons.visibility_off),
         ),
       ),
     );
@@ -307,7 +230,6 @@ class _ConfirmPasswordTextField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.visiblePassword,
       obscureText: obscureText,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context
             .read<RegisterBloc>()
@@ -321,31 +243,13 @@ class _ConfirmPasswordTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: 'Enter Confirm Password',
-        hintStyle: const TextStyle(
-          color: AppColor.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
         suffixIcon: IconButton(
           onPressed: () {
             context.read<RegisterBloc>().add(ConfirmPasswordToggleEvent());
           },
           icon: obscureText
-              ? const Icon(
-                  Icons.visibility,
-                  color: Colors.white,
-                )
-              : const Icon(
-                  Icons.visibility_off,
-                  color: Colors.white,
-                ),
+              ? const Icon(Icons.visibility)
+              : const Icon(Icons.visibility_off),
         ),
       ),
     );

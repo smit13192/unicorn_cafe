@@ -11,7 +11,7 @@ class LoginState extends Equatable {
     this.status = FormzStatus.pure,
     this.email = '',
     this.password = '',
-    this.passwordObscureText = false,
+    this.passwordObscureText = true,
     this.error = '',
   });
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -31,6 +33,7 @@ class FirebaseAuthService {
       return right(userCredential);
     } on FirebaseAuthException catch (e) {
       String error = getErrorMessage(e.code);
+      log(e.code);
       return left(error);
     }
   }
@@ -66,6 +69,8 @@ class FirebaseAuthService {
         return 'Email id not exist';
       case 'wrong-password':
         return 'Invalid password';
+      case 'email-already-in-use':
+        return 'Email id already in use';
       default:
         return 'Some error accurred';
     }

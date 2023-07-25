@@ -14,7 +14,7 @@ class AppButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    this.buttonColor = AppColor.kE8B35A,
+    this.buttonColor = AppColor.primaryColor,
     this.borderRadius,
     this.style,
   });
@@ -27,9 +27,8 @@ class AppButton extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         borderRadius: borderRadius ?? BorderRadius.circular(30),
-        splashColor: AppColor.primaryColor.withOpacity(0.3),
         child: Container(
-          height: 53,
+          height: 60,
           decoration: BoxDecoration(
             borderRadius: borderRadius ?? BorderRadius.circular(30),
           ),
@@ -40,6 +39,7 @@ class AppButton extends StatelessWidget {
                   const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
+                    fontWeight: FontWeight.w500,
                   ),
             ),
           ),

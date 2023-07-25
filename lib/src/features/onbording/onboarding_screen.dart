@@ -41,7 +41,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.black,
+      backgroundColor: AppColor.scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -151,7 +151,7 @@ class __FirstViewState extends State<_FirstView> with TickerProviderStateMixin {
         const Text(
           'All You Need Coffee',
           style: TextStyle(
-            color: AppColor.kE8B35A,
+            color: AppColor.primaryColor,
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
@@ -163,7 +163,7 @@ class __FirstViewState extends State<_FirstView> with TickerProviderStateMixin {
           child: const Text(
             'The flavour that brings life to your body in the morning',
             style: TextStyle(
-              color: AppColor.white,
+              color: AppColor.secondaryColor,
               fontSize: 15,
             ),
             textAlign: TextAlign.center,
@@ -249,7 +249,7 @@ class __SecondViewState extends State<_SecondView>
         const Text(
           'Unicorn Dark9',
           style: TextStyle(
-            color: AppColor.kE8B35A,
+            color: AppColor.primaryColor,
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
@@ -261,7 +261,7 @@ class __SecondViewState extends State<_SecondView>
           child: const Text(
             'Coffee cups set vector top view different types of coffee',
             style: TextStyle(
-              color: AppColor.white,
+              color: AppColor.secondaryColor,
               fontSize: 15,
             ),
             textAlign: TextAlign.center,
@@ -350,7 +350,7 @@ class __ThirdViewState extends State<_ThirdView> with TickerProviderStateMixin {
         const Text(
           'Life happens, coffee helps',
           style: TextStyle(
-            color: AppColor.kE8B35A,
+            color: AppColor.primaryColor,
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
@@ -362,7 +362,7 @@ class __ThirdViewState extends State<_ThirdView> with TickerProviderStateMixin {
           child: const Text(
             'May your coffee be strong and your Monday be short` Sip sip, hooray!',
             style: TextStyle(
-              color: AppColor.white,
+              color: AppColor.secondaryColor,
               fontSize: 15,
             ),
             textAlign: TextAlign.center,

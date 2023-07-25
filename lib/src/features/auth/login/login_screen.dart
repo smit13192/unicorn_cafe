@@ -41,14 +41,15 @@ class _LoginView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColor.black,
+        backgroundColor: AppColor.scaffoldBackgroundColor,
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Text(
             'Sign In',
             style: TextStyle(
-              color: AppColor.kE8B35A,
+              color: AppColor.primaryColor,
               fontSize: 25,
               fontWeight: FontWeight.w500,
             ),
@@ -63,26 +64,6 @@ class _LoginView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const GapH(3.5),
-                const Text(
-                  'Welcome Back,',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: AppColor.kE8B35A,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'Sign in to continue',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: AppColor.kE8B35A,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const GapH(3.5),
                 const _EmailTextField(),
                 const GapH(3.5),
                 const _PasswordTextField(),
@@ -91,12 +72,12 @@ class _LoginView extends StatelessWidget {
                   'Forgot Password?',
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                    color: AppColor.kE8B35A,
+                    color: AppColor.primaryColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const GapH(3),
+                const GapH(1.5),
                 AppButton(
                   text: 'Sign in',
                   onPressed: () {
@@ -123,7 +104,6 @@ class _EmailTextField extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.emailAddress,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context.read<LoginBloc>().add(EmailChangedEvent(value.trim()));
       },
@@ -135,18 +115,6 @@ class _EmailTextField extends StatelessWidget {
       },
       decoration: const InputDecoration(
         hintText: 'Enter Email',
-        hintStyle: TextStyle(
-          color: AppColor.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
       ),
     );
   }
@@ -165,7 +133,6 @@ class _PasswordTextField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.visiblePassword,
       obscureText: obscureText,
-      style: const TextStyle(color: AppColor.white),
       onChanged: (value) {
         context.read<LoginBloc>().add(PasswordChangedEvent(value.trim()));
       },
@@ -179,31 +146,13 @@ class _PasswordTextField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: 'Enter Password',
-        hintStyle: const TextStyle(
-          color: AppColor.grey,
-          fontSize: 18,
-        ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColor.white),
-        ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.white,
-          ),
-        ),
         suffixIcon: IconButton(
           onPressed: () {
             context.read<LoginBloc>().add(PasswordToggleEvent());
           },
           icon: obscureText
-              ? const Icon(
-                  Icons.visibility,
-                  color: Colors.white,
-                )
-              : const Icon(
-                  Icons.visibility_off,
-                  color: Colors.white,
-                ),
+              ? const Icon(Icons.visibility)
+              : const Icon(Icons.visibility_off),
         ),
       ),
     );
