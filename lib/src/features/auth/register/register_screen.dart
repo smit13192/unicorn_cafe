@@ -45,6 +45,16 @@ class _RegisterView extends StatelessWidget {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.keyboard_arrow_left,
+              color: AppColor.primaryColor,
+              size: 30,
+            ),
+          ),
           title: const Text(
             'Sign Up',
             style: TextStyle(
