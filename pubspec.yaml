@@ -49,6 +49,12 @@ dependencies:
   dartz: ^0.10.1
   fpdart: ^0.6.0
   google_sign_in: ^6.1.4
+  firebase_storage: ^11.2.5
+  firebase_database: ^10.2.4
+  loading:
+    git:
+      url: https://github.com/smit13192/loading.git
+      ref: master
 
 dev_dependencies:
   flutter_test:
