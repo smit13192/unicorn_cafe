@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading/screen_loading_controller.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/formz_status.dart';
@@ -32,6 +33,11 @@ class _RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<RegisterBloc, RegisterState>(
       listener: (context, state) {
+        if (state.status.isLoading) {
+          ScreenLoadingController.instance.show(context);
+        } else {
+          ScreenLoadingController.instance.hide();
+        }
         if (state.status.isSuccess) {
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoute.homeScreen, (route) => false);

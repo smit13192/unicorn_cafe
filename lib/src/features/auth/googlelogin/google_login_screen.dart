@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:loading/screen_loading_controller.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
@@ -34,6 +35,11 @@ class _GoogleLoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<GoogleLoginBloc, GoogleLoginState>(
       listener: (context, state) {
+        if (state.status.isLoading) {
+          ScreenLoadingController.instance.show(context);
+        } else {
+          ScreenLoadingController.instance.hide();
+        }
         if (state.status.isSuccess) {
           Navigator.of(context)
               .pushNamedAndRemoveUntil(AppRoute.homeScreen, (route) => false);
