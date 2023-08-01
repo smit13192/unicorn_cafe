@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
+import 'package:unicorn_cafe/src/config/string/app_string.dart';
 import 'package:unicorn_cafe/src/features/home/cubit/bottom_navigation_cubit.dart';
+import 'package:unicorn_cafe/src/features/home/page/cart_page.dart';
+import 'package:unicorn_cafe/src/features/home/page/favorite_page.dart';
+import 'package:unicorn_cafe/src/features/home/page/product_page.dart';
+import 'package:unicorn_cafe/src/features/home/page/profile_page.dart';
 import 'package:unicorn_cafe/src/widget/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,13 +16,20 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BottomNavigationCubit(),
-      child: const _HomeView(),
+      child: _HomeView(),
     );
   }
 }
 
 class _HomeView extends StatelessWidget {
-  const _HomeView();
+  _HomeView();
+
+  final List<Widget> _pages = [
+    const ProductPage(),
+    const FavoritePage(),
+    const CartPage(),
+    const ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +39,18 @@ class _HomeView extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          'UNICORN CAFE',
+          AppString.appName,
           style: TextStyle(color: AppColor.primaryColor, fontSize: 25),
         ),
         backgroundColor: Colors.transparent,
+      ),
+      body: BlocBuilder<BottomNavigationCubit, int>(
+        builder: (context, state) {
+          return IndexedStack(
+            index: state,
+            children: _pages,
+          );
+        },
       ),
       bottomNavigationBar: BlocBuilder<BottomNavigationCubit, int>(
         builder: (context, state) {
