@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -33,7 +31,6 @@ class FirebaseAuthService {
       return right(userCredential);
     } on FirebaseAuthException catch (e) {
       String error = getErrorMessage(e.code);
-      log(e.code);
       return left(error);
     }
   }

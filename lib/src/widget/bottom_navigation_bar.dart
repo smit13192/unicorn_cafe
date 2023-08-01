@@ -29,7 +29,7 @@ class AppBottomNavigationBar extends StatelessWidget {
         color: AppColor.white,
         boxShadow: [
           BoxShadow(
-            color: AppColor.black.withOpacity(0.25),
+            color: AppColor.shadowColor,
             blurRadius: 10,
           ),
         ],
