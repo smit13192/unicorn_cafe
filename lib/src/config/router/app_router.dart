@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_cafe/src/features/auth/googlelogin/google_login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
@@ -29,6 +30,10 @@ abstract class AppRouter {
       case AppRoute.homeScreen:
         return MaterialPageRoute(
           builder: (context) => const HomeScreen(),
+        );
+      case AppRoute.googlelogin:
+        return MaterialPageRoute(
+          builder: (context) => const GoogleLoginScreen(),
         );
       default:
         return null;
