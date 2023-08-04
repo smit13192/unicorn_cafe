@@ -4,6 +4,7 @@ import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_index_cubit/category_index_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_product_cubit/category_product_cubit.dart';
+import 'package:unicorn_cafe/src/features/home/page/category_type_cubit/category_type_cubit.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
@@ -13,27 +14,30 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CategoryIndexCubit(),
-      child: _ProductView(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CategoryIndexCubit(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              CategoryTypeCubit(context.read<FirebaseCloudService>())
+                ..getTypes(),
+        ),
+      ],
+      child: const _ProductView(),
     );
   }
 }
 
 class _ProductView extends StatelessWidget {
-  _ProductView();
-
-  final List<String> categories = [
-    'Cappuccino',
-    'Americano',
-    'Thick Shake',
-  ];
+  const _ProductView();
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 6.w),
+        padding: EdgeInsets.symmetric(horizontal: 4.5.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -58,15 +62,23 @@ class _ProductView extends StatelessWidget {
               ),
             ),
             const GapH(1),
-            categoriesTab(),
-            BlocBuilder<CategoryIndexCubit, int>(
+            BlocBuilder<CategoryTypeCubit, List<String>>(
               builder: (context, state) {
-                return IndexedStack(
-                  index: state,
-                  children: List.generate(
-                    categories.length,
-                    (index) => _CategoryTile(categories[index]),
-                  ),
+                return categoriesTab(state);
+              },
+            ),
+            BlocBuilder<CategoryTypeCubit, List<String>>(
+              builder: (context, state) {
+                return BlocBuilder<CategoryIndexCubit, int>(
+                  builder: (context, indexState) {
+                    return IndexedStack(
+                      index: indexState,
+                      children: List.generate(
+                        state.length,
+                        (index) => _CategoryTile(state[index]),
+                      ),
+                    );
+                  },
                 );
               },
             )
@@ -76,7 +88,9 @@ class _ProductView extends StatelessWidget {
     );
   }
 
-  NotificationListener<OverscrollIndicatorNotification> categoriesTab() {
+  NotificationListener<OverscrollIndicatorNotification> categoriesTab(
+    List<String> categories,
+  ) {
     return NotificationListener<OverscrollIndicatorNotification>(
       onNotification: (notification) {
         notification.disallowIndicator();
@@ -111,7 +125,7 @@ class _ProductView extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 4,
-                            offset: const Offset(0, 4),
+                            offset: const Offset(0, 2),
                             color: AppColor.shadowColor,
                           ),
                         ],
@@ -154,7 +168,7 @@ class _SearchField extends StatelessWidget {
           color: AppColor.white,
           boxShadow: [
             BoxShadow(
-              blurRadius: 10,
+              blurRadius: 5,
               offset: const Offset(0, 4),
               color: AppColor.shadowColor,
             ),
@@ -261,7 +275,7 @@ class CategoryProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 38.92.w,
+      width: 40.w,
       margin: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 20,
@@ -271,12 +285,12 @@ class CategoryProductTile extends StatelessWidget {
         color: AppColor.white,
         boxShadow: [
           BoxShadow(
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
             color: AppColor.shadowColor,
           ),
         ],
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,12 +298,12 @@ class CategoryProductTile extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(20),
+              top: Radius.circular(15),
             ),
             child: Image.network(
               product.image,
-              height: 38.92.w,
-              width: 38.92.w,
+              height: 40.w,
+              width: 40.w,
               fit: BoxFit.cover,
             ),
           ),

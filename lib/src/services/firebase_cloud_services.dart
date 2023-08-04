@@ -17,4 +17,17 @@ class FirebaseCloudService {
               .toList(),
         );
   }
+  
+  Stream<List<String>> getAllTypes() {
+    return _instance
+        .collection(AppString.productTypeColletion)
+        .snapshots()
+        .map<List<String>>(
+          (event) => event.docs
+              .map<String>(
+                (type) => type.data()['type'],
+              )
+              .toList(),
+        );
+  }
 }
