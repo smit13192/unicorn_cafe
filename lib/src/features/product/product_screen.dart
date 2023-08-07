@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
+import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/home/page/product_cubit/product_cubit.dart';
 import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
@@ -14,8 +15,8 @@ class ProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          ProductCubit(context.read<FirebaseCloudService>())..getAllProduct(null),
+      create: (context) => ProductCubit(context.read<FirebaseCloudService>())
+        ..getAllProduct(null),
       child: const _ProductView(),
     );
   }
@@ -66,7 +67,16 @@ class _ProductView extends StatelessWidget {
                 itemCount: state.length,
                 itemBuilder: (context, index) {
                   ProductModel product = state[index];
-                  return ProductTile(product: product);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoute.productDescriptionScreen,
+                        arguments: product,
+                      );
+                    },
+                    child: ProductTile(product: product),
+                  );
                 },
               ),
             );

@@ -132,7 +132,16 @@ class _ProductView extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       ProductModel product = state[index];
-                      return _PopularProductTile(product: product);
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.productDescriptionScreen,
+                            arguments: product,
+                          );
+                        },
+                        child: _PopularProductTile(product: product),
+                      );
                     },
                   );
                 },
@@ -399,7 +408,16 @@ class CategoryTile extends StatelessWidget {
                           children:
                               List.generate(snapshot.data!.length, (index) {
                             final product = snapshot.data![index];
-                            return CategoryProductTile(product: product);
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoute.productDescriptionScreen,
+                                  arguments: product,
+                                );
+                              },
+                              child: CategoryProductTile(product: product),
+                            );
                           }),
                         ),
                       ),

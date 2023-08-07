@@ -5,7 +5,9 @@ import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
 import 'package:unicorn_cafe/src/features/onbording/onboarding_screen.dart';
 import 'package:unicorn_cafe/src/features/product/product_screen.dart';
+import 'package:unicorn_cafe/src/features/product_description/product_description_screen.dart';
 import 'package:unicorn_cafe/src/features/splash/splash_screen.dart';
+import 'package:unicorn_cafe/src/model/product_model.dart';
 
 part 'app_route.dart';
 
@@ -39,6 +41,11 @@ abstract class AppRouter {
       case AppRoute.productScreen:
         return MaterialPageRoute(
           builder: (context) => const ProductScreen(),
+        );
+      case AppRoute.productDescriptionScreen:
+        final ProductModel productModel = settings.arguments as ProductModel;
+        return MaterialPageRoute(
+          builder: (context) => ProductDescriprionScreen(productModel: productModel),
         );
       default:
         return null;

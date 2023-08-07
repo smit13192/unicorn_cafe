@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
+import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 
 class FirebaseCloudService {
@@ -55,5 +56,36 @@ class FirebaseCloudService {
               )
               .toList(),
         );
+  }
+
+  Stream<List<LikeModel>> fetchLikes(String uid) {
+    return _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.likeCollection)
+        .snapshots()
+        .map<List<LikeModel>>(
+          (event) => event.docs
+              .map<LikeModel>((e) => LikeModel.fromMap(e.data()))
+              .toList(),
+        );
+  }
+
+  void addLike(String uid, String pid) {
+    final doc = _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.likeCollection)
+        .doc();
+    final LikeModel likeModel = LikeModel(lid: doc.id, pid: pid);
+    doc.set(likeModel.toMap());
+  }
+  
+  void removeLike(String uid, String lid) {
+    _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.likeCollection)
+        .doc(lid).delete();
   }
 }

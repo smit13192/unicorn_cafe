@@ -7,6 +7,7 @@ import 'package:unicorn_cafe/src/features/home/page/cart_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/favorite_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/product_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/profile_page.dart';
+import 'package:unicorn_cafe/src/features/product_description/product_like_bloc/product_like_bloc.dart';
 import 'package:unicorn_cafe/src/widget/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,14 +17,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BottomNavigationCubit(),
-      child: _HomeView(),
+      child: const _HomeView(),
     );
   }
 }
 
-class _HomeView extends StatelessWidget {
-  _HomeView();
+class _HomeView extends StatefulWidget {
+  const _HomeView();
 
+  @override
+  State<_HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<_HomeView> {
   final List<Widget> _pages = [
     const ProductPage(),
     const FavoritePage(),
@@ -32,11 +38,16 @@ class _HomeView extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    context.read<ProductLikeBloc>().fetchLikes();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.scaffoldBackgroundColor,
       appBar: AppBar(
-        
         elevation: 0,
         centerTitle: true,
         title: const Text(

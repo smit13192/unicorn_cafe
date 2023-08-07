@@ -58,6 +58,8 @@ class FirebaseAuthService {
 
   bool get isLogin => FirebaseAuth.instance.currentUser != null;
 
+  String get uid => FirebaseAuth.instance.currentUser?.uid ?? '';
+
   String getErrorMessage(String errorCode) {
     switch (errorCode) {
       case 'email-already-exists':
