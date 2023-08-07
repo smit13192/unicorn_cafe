@@ -36,6 +36,7 @@ class _HomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.scaffoldBackgroundColor,
       appBar: AppBar(
+        
         elevation: 0,
         centerTitle: true,
         title: const Text(

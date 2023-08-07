@@ -17,7 +17,7 @@ class FirebaseCloudService {
               .toList(),
         );
   }
-  
+
   Stream<List<String>> getAllTypes() {
     return _instance
         .collection(AppString.productTypeColletion)
@@ -26,6 +26,32 @@ class FirebaseCloudService {
           (event) => event.docs
               .map<String>(
                 (type) => type.data()['type'],
+              )
+              .toList(),
+        );
+  }
+
+  Stream<List<ProductModel>> getAllProducts({int? limit}) {
+    if (limit == null) {
+      return _instance
+          .collection(AppString.productColletion)
+          .snapshots()
+          .map<List<ProductModel>>(
+            (event) => event.docs
+                .map<ProductModel>(
+                  (product) => ProductModel.fromMap(product.data()),
+                )
+                .toList(),
+          );
+    }
+    return _instance
+        .collection(AppString.productColletion)
+        .limit(limit)
+        .snapshots()
+        .map<List<ProductModel>>(
+          (event) => event.docs
+              .map<ProductModel>(
+                (product) => ProductModel.fromMap(product.data()),
               )
               .toList(),
         );

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
+import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_index_cubit/category_index_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_product_cubit/category_product_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_type_cubit/category_type_cubit.dart';
+import 'package:unicorn_cafe/src/features/home/page/product_cubit/product_cubit.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
@@ -24,6 +26,11 @@ class ProductPage extends StatelessWidget {
               CategoryTypeCubit(context.read<FirebaseCloudService>())
                 ..getTypes(),
         ),
+        BlocProvider(
+          create: (context) =>
+              ProductCubit(context.read<FirebaseCloudService>())
+                ..getAllProduct(5),
+        ),
       ],
       child: const _ProductView(),
     );
@@ -35,54 +42,104 @@ class _ProductView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.5.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const GapH(1),
-            const Text(
-              'Good Morning',
-              style: TextStyle(
-                color: AppColor.primaryColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (notification) {
+        notification.disallowIndicator();
+        return true;
+      },
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.5.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const GapH(1),
+              const Text(
+                'Good Morning',
+                style: TextStyle(
+                  color: AppColor.primaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const GapH(2),
-            const _SearchField(),
-            const GapH(2),
-            const Text(
-              'Categories',
-              style: TextStyle(
-                color: AppColor.primaryColor,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+              const GapH(2),
+              const _SearchField(),
+              const GapH(2),
+              const Text(
+                'Categories',
+                style: TextStyle(
+                  color: AppColor.primaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            const GapH(1),
-            BlocBuilder<CategoryTypeCubit, List<String>>(
-              builder: (context, state) {
-                return categoriesTab(state);
-              },
-            ),
-            BlocBuilder<CategoryTypeCubit, List<String>>(
-              builder: (context, state) {
-                return BlocBuilder<CategoryIndexCubit, int>(
-                  builder: (context, indexState) {
-                    return IndexedStack(
-                      index: indexState,
-                      children: List.generate(
-                        state.length,
-                        (index) => _CategoryTile(state[index]),
+              const GapH(1),
+              BlocBuilder<CategoryTypeCubit, List<String>>(
+                builder: (context, state) {
+                  return categoriesTab(state);
+                },
+              ),
+              BlocBuilder<CategoryTypeCubit, List<String>>(
+                builder: (context, state) {
+                  return BlocBuilder<CategoryIndexCubit, int>(
+                    builder: (context, indexState) {
+                      return IndexedStack(
+                        index: indexState,
+                        children: List.generate(
+                          state.length,
+                          (index) => _CategoryView(state[index]),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+              Row(
+                children: [
+                  const Text(
+                    'Populer 🔥',
+                    style: TextStyle(
+                      color: AppColor.primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoute.productScreen);
+                    },
+                    child: const Text(
+                      'View All',
+                      style: TextStyle(
+                        color: AppColor.primaryColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
                       ),
-                    );
-                  },
-                );
-              },
-            )
-          ],
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 15),
+              BlocBuilder<ProductCubit, List<ProductModel>>(
+                builder: (context, state) {
+                  return ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 10);
+                    },
+                    shrinkWrap: true,
+                    itemCount: state.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      ProductModel product = state[index];
+                      return _PopularProductTile(product: product);
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
@@ -135,7 +192,7 @@ class _ProductView extends StatelessWidget {
                         categories[index],
                         style: TextStyle(
                           color: state == index
-                              ? Colors.white
+                              ? AppColor.white
                               : AppColor.primaryColor,
                           fontWeight: state == index
                               ? FontWeight.bold
@@ -150,6 +207,102 @@ class _ProductView extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _PopularProductTile extends StatelessWidget {
+  const _PopularProductTile({
+    required this.product,
+  });
+
+  final ProductModel product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120,
+      decoration: BoxDecoration(
+        color: AppColor.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+            color: AppColor.shadowColor,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(
+              product.image,
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 7),
+                Text(
+                  product.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: AppColor.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const GapH(0.2),
+                Text(
+                  product.subtitle,
+                  maxLines: 2,
+                  textAlign: TextAlign.justify,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColor.thirdColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '₹${product.price.toString()}',
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: AppColor.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 7),
+              ],
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              color: AppColor.primaryColor,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: const Icon(
+              Icons.add,
+              size: 15,
+              color: AppColor.white,
+            ),
+          ),
+          const SizedBox(width: 5),
+        ],
       ),
     );
   }
@@ -201,9 +354,9 @@ class _SearchField extends StatelessWidget {
   }
 }
 
-class _CategoryTile extends StatelessWidget {
+class _CategoryView extends StatelessWidget {
   final String type;
-  const _CategoryTile(this.type);
+  const _CategoryView(this.type);
 
   @override
   Widget build(BuildContext context) {
@@ -211,13 +364,13 @@ class _CategoryTile extends StatelessWidget {
       create: (context) =>
           CategoryProductCubit(context.read<FirebaseCloudService>())
             ..fetchProduct(type),
-      child: const _CategoryView(),
+      child: const CategoryTile(),
     );
   }
 }
 
-class _CategoryView extends StatelessWidget {
-  const _CategoryView();
+class CategoryTile extends StatelessWidget {
+  const CategoryTile({super.key});
 
   @override
   Widget build(BuildContext context) {

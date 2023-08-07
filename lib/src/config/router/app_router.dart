@@ -4,6 +4,7 @@ import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
 import 'package:unicorn_cafe/src/features/onbording/onboarding_screen.dart';
+import 'package:unicorn_cafe/src/features/product/product_screen.dart';
 import 'package:unicorn_cafe/src/features/splash/splash_screen.dart';
 
 part 'app_route.dart';
@@ -27,13 +28,17 @@ abstract class AppRouter {
         return MaterialPageRoute(
           builder: (context) => const RegisterScreen(),
         );
+      case AppRoute.googlelogin:
+        return MaterialPageRoute(
+          builder: (context) => const GoogleLoginScreen(),
+        );
       case AppRoute.homeScreen:
         return MaterialPageRoute(
           builder: (context) => const HomeScreen(),
         );
-      case AppRoute.googlelogin:
+      case AppRoute.productScreen:
         return MaterialPageRoute(
-          builder: (context) => const GoogleLoginScreen(),
+          builder: (context) => const ProductScreen(),
         );
       default:
         return null;

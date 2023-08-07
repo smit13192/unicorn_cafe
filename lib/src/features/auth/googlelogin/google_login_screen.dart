@@ -148,7 +148,7 @@ class _GoogleLoginView extends StatelessWidget {
                           Text(
                             'Continue With Google',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: AppColor.white,
                               fontSize: 17,
                               fontWeight: FontWeight.w500,
                             ),
