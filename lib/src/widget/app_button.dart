@@ -22,6 +22,8 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      elevation: 3,
+      shadowColor: AppColor.primaryColor.withOpacity(0.50),
       color: buttonColor,
       borderRadius: borderRadius ?? BorderRadius.circular(30),
       child: InkWell(

@@ -103,7 +103,8 @@ class _RegisterView extends StatelessWidget {
                               .add(RegisterSubmitEvent());
                         }
                       },
-                    )
+                    ),
+                    const GapH(5),
                   ],
                 ),
               ),

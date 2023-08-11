@@ -94,55 +94,62 @@ class _ProductView extends StatelessWidget {
                   );
                 },
               ),
-              Row(
-                children: [
-                  const Text(
-                    'Populer 🔥',
-                    style: TextStyle(
-                      color: AppColor.primaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoute.productScreen);
-                    },
-                    child: const Text(
-                      'View All',
-                      style: TextStyle(
-                        color: AppColor.primaryColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 15),
               BlocBuilder<ProductCubit, List<ProductModel>>(
                 builder: (context, state) {
-                  return ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 10);
-                    },
-                    shrinkWrap: true,
-                    itemCount: state.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      ProductModel product = state[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoute.productDescriptionScreen,
-                            arguments: product,
+                  return Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Text(
+                            'Populer 🔥',
+                            style: TextStyle(
+                              color: AppColor.primaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoute.productScreen,
+                              );
+                            },
+                            child: const Text(
+                              'View All',
+                              style: TextStyle(
+                                color: AppColor.primaryColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: 10);
+                        },
+                        shrinkWrap: true,
+                        itemCount: state.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          ProductModel product = state[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoute.productDescriptionScreen,
+                                arguments: product,
+                              );
+                            },
+                            child: _PopularProductTile(product: product),
                           );
                         },
-                        child: _PopularProductTile(product: product),
-                      );
-                    },
+                      ),
+                    ],
                   );
                 },
               ),
