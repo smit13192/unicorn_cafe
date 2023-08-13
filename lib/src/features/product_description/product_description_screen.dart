@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
-import 'package:unicorn_cafe/src/features/product_description/product_like_bloc/product_like_bloc.dart';
+import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
@@ -43,12 +43,13 @@ class ProductDescriprionView extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
         ),
         actions: [
-          BlocBuilder<ProductLikeBloc, List<LikeModel>>(
+          BlocBuilder<ProductLikeCubit, List<LikeModel>>(
             builder: (context, state) {
               return IconButton(
+                splashColor: Colors.transparent,
                 onPressed: () {
                   if (state.map((e) => e.pid).toList().contains(product.pid)) {
-                    context.read<ProductLikeBloc>().removeLikes(
+                    context.read<ProductLikeCubit>().removeLikes(
                           state
                               .where((e) => product.pid == e.pid)
                               .toList()
@@ -56,7 +57,7 @@ class ProductDescriprionView extends StatelessWidget {
                               .lid,
                         );
                   } else {
-                    context.read<ProductLikeBloc>().addLikes(product.pid);
+                    context.read<ProductLikeCubit>().addLikes(product.pid);
                   }
                 },
                 icon: state.map((e) => e.pid).toList().contains(product.pid)

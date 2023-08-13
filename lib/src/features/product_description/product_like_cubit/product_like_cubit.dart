@@ -5,11 +5,11 @@ import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
 import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 
-class ProductLikeBloc extends Cubit<List<LikeModel>> {
+class ProductLikeCubit extends Cubit<List<LikeModel>> {
   final FirebaseAuthService _firebaseAuthService;
   final FirebaseCloudService _firebaseCloudService;
   StreamSubscription? subscription;
-  ProductLikeBloc({
+  ProductLikeCubit({
     required FirebaseAuthService firebaseAuthService,
     required FirebaseCloudService firebaseCloudService,
   })  : _firebaseAuthService = firebaseAuthService,

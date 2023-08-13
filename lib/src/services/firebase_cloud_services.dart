@@ -58,6 +58,12 @@ class FirebaseCloudService {
         );
   }
 
+  Future<ProductModel> getProduct(String uid) async {
+    final snapshot =
+        await _instance.collection(AppString.productColletion).doc(uid).get();
+    return ProductModel.fromMap(snapshot.data() as Map<String, dynamic>);
+  }
+
   Stream<List<LikeModel>> fetchLikes(String uid) {
     return _instance
         .collection(AppString.userCollection)
@@ -80,12 +86,13 @@ class FirebaseCloudService {
     final LikeModel likeModel = LikeModel(lid: doc.id, pid: pid);
     doc.set(likeModel.toMap());
   }
-  
+
   void removeLike(String uid, String lid) {
     _instance
         .collection(AppString.userCollection)
         .doc(uid)
         .collection(AppString.likeCollection)
-        .doc(lid).delete();
+        .doc(lid)
+        .delete();
   }
 }
