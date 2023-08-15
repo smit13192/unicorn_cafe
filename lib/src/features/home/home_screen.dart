@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
+import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
+import 'package:unicorn_cafe/src/features/cart/cart_screen.dart';
 import 'package:unicorn_cafe/src/features/home/cubit/bottom_navigation_cubit.dart';
-import 'package:unicorn_cafe/src/features/home/page/cart_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/favorite_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/product_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/profile_page.dart';
-import 'package:unicorn_cafe/src/features/home/user_cart_cubit/user_cart_cubit.dart';
+import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/widget/bottom_navigation_bar.dart';
 
@@ -34,7 +35,7 @@ class _HomeViewState extends State<_HomeView> {
   final List<Widget> _pages = [
     const ProductPage(),
     const FavoritePage(),
-    const CartPage(),
+    const CartView(),
     const ProfilePage(),
   ];
 
@@ -71,7 +72,11 @@ class _HomeViewState extends State<_HomeView> {
           return AppBottomNavigationBar(
             selectedIndex: state,
             onChanged: (value) {
-              context.read<BottomNavigationCubit>().indexChanged(value);
+              if (value == 2) {
+                Navigator.pushNamed(context, AppRoute.cartScreen);
+              } else {
+                context.read<BottomNavigationCubit>().indexChanged(value);
+              }
             },
           );
         },

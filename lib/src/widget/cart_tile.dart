@@ -2,76 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
-import 'package:unicorn_cafe/src/features/home/user_cart_cubit/user_cart_cubit.dart';
+import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/model/cart_model.dart';
-import 'package:unicorn_cafe/src/widget/app_button.dart';
+import 'package:unicorn_cafe/src/widget/cart_button.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
-
-class CartPage extends StatelessWidget {
-  const CartPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<UserCartCubit, List<CartModel>>(
-      builder: (context, state) {
-        double totalPrice = state.fold<double>(0.0, (previousValue, element) {
-          return previousValue += element.price * element.quantity;
-        });
-        return NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (notification) {
-            notification.disallowIndicator();
-            return true;
-          },
-          child: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 1.h),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: state.length,
-                    itemBuilder: (context, index) {
-                      CartModel cart = state[index];
-                      return CartTile(cart: cart);
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.h),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        totalPrice.toStringAsFixed(2),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: AppColor.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: AppButton(
-                        borderRadius: BorderRadius.circular(10),
-                        text: 'Process to Buy',
-                        onPressed: () {},
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
 
 class CartTile extends StatelessWidget {
   final CartModel cart;
-  const CartTile({super.key, required this.cart});
+  final Function() incrementButton;
+  final Function() decrementButton;
+  const CartTile({
+    super.key,
+    required this.cart,
+    required this.incrementButton,
+    required this.decrementButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -178,52 +123,6 @@ class CartTile extends StatelessWidget {
           ),
           const SizedBox(width: 15),
         ],
-      ),
-    );
-  }
-}
-
-class CartButton extends StatelessWidget {
-  final String text;
-  final Color color;
-  final Color textColor;
-  final Function()? onPressed;
-
-  const CartButton({
-    super.key,
-    required this.text,
-    this.color = AppColor.primaryColor,
-    this.textColor = AppColor.white,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        height: 25,
-        width: 25,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.black.withOpacity(0.25),
-              blurRadius: 4,
-              offset: const Offset(0, 4),
-            )
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
       ),
     );
   }

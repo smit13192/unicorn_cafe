@@ -83,19 +83,22 @@ class ProductTile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: onPressed,
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          size: 15,
-                          color: AppColor.white,
+                    Material(
+                      color: AppColor.primaryColor,
+                      borderRadius: BorderRadius.circular(18),
+                      elevation: 3,
+                      shadowColor: AppColor.primaryColor.withOpacity(0.50),
+                      child: InkWell(
+                        onTap: onPressed,
+                        borderRadius: BorderRadius.circular(18),
+                        child: const SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: Icon(
+                            Icons.add,
+                            size: 15,
+                            color: AppColor.white,
+                          ),
                         ),
                       ),
                     ),

@@ -38,11 +38,12 @@ class AppOutlinedButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: style ??  TextStyle(
-                fontSize: 17,
-                color: buttonColor,
-                fontWeight: FontWeight.w500,
-              ),
+              style: style ??
+                  TextStyle(
+                    fontSize: 17,
+                    color: buttonColor,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
         ),

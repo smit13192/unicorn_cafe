@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_cafe/src/features/auth/googlelogin/google_login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
+import 'package:unicorn_cafe/src/features/cart/cart_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
 import 'package:unicorn_cafe/src/features/onbording/onboarding_screen.dart';
 import 'package:unicorn_cafe/src/features/product/product_screen.dart';
@@ -45,7 +46,12 @@ abstract class AppRouter {
       case AppRoute.productDescriptionScreen:
         final ProductModel productModel = settings.arguments as ProductModel;
         return MaterialPageRoute(
-          builder: (context) => ProductDescriprionScreen(productModel: productModel),
+          builder: (context) =>
+              ProductDescriprionScreen(productModel: productModel),
+        );
+      case AppRoute.cartScreen:
+        return MaterialPageRoute(
+          builder: (context) => const CartScreen(),
         );
       default:
         return null;
