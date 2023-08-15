@@ -7,6 +7,7 @@ import 'package:unicorn_cafe/src/features/home/page/cart_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/favorite_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/product_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/profile_page.dart';
+import 'package:unicorn_cafe/src/features/home/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/widget/bottom_navigation_bar.dart';
 
@@ -41,6 +42,7 @@ class _HomeViewState extends State<_HomeView> {
   void initState() {
     super.initState();
     context.read<ProductLikeCubit>().fetchLikes();
+    context.read<UserCartCubit>().getCartItem();
   }
 
   @override

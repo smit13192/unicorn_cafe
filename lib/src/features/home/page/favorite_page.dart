@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
+import 'package:unicorn_cafe/src/features/home/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
@@ -49,7 +51,40 @@ class FavoritePage extends StatelessWidget {
                             arguments: productModel,
                           );
                         },
-                        child: ProductTile(product: productModel),
+                        child: Stack(
+                          children: [
+                            ProductTile(
+                              product: productModel,
+                              onPressed: () {
+                                context
+                                    .read<UserCartCubit>()
+                                    .addCartItem(productModel);
+                                    Fluttertoast.showToast(msg: 'Add Product');
+                              },
+                            ),
+                            Positioned(
+                              right: 0,
+                              child: IconButton(
+                                splashColor: Colors.transparent,
+                                onPressed: () {
+                                  context.read<ProductLikeCubit>().removeLikes(
+                                        state
+                                            .where(
+                                              (e) => productModel.pid == e.pid,
+                                            )
+                                            .toList()
+                                            .first
+                                            .lid,
+                                      );
+                                },
+                                icon: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       );
                     }
                     return Container();

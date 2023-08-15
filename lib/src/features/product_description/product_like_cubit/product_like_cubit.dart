@@ -9,6 +9,7 @@ class ProductLikeCubit extends Cubit<List<LikeModel>> {
   final FirebaseAuthService _firebaseAuthService;
   final FirebaseCloudService _firebaseCloudService;
   StreamSubscription? subscription;
+
   ProductLikeCubit({
     required FirebaseAuthService firebaseAuthService,
     required FirebaseCloudService firebaseCloudService,

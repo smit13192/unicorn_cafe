@@ -8,8 +8,10 @@ class ProductTile extends StatelessWidget {
   const ProductTile({
     super.key,
     required this.product,
+    required this.onPressed,
   });
 
+  final Function() onPressed;
   final ProductModel product;
 
   @override
@@ -71,8 +73,7 @@ class ProductTile extends StatelessWidget {
                 ),
                 const GapH(1),
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '₹${product.price.toString()}',
@@ -82,17 +83,20 @@ class ProductTile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: AppColor.primaryColor,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 15,
-                        color: AppColor.white,
+                    GestureDetector(
+                      onTap: onPressed,
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: AppColor.primaryColor,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          size: 15,
+                          color: AppColor.white,
+                        ),
                       ),
                     ),
                   ],

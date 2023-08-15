@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
+import 'package:unicorn_cafe/src/features/home/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
+import 'package:unicorn_cafe/src/widget/app_outlined_button.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
 
 class ProductDescriprionScreen extends StatefulWidget {
@@ -46,6 +49,7 @@ class ProductDescriprionView extends StatelessWidget {
           BlocBuilder<ProductLikeCubit, List<LikeModel>>(
             builder: (context, state) {
               return IconButton(
+                highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onPressed: () {
                   if (state.map((e) => e.pid).toList().contains(product.pid)) {
@@ -200,9 +204,25 @@ class ProductDescriprionView extends StatelessWidget {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-            child: AppButton(
-              text: 'Add To Bag',
-              onPressed: () {},
+            child: Row(
+              children: [
+                Expanded(
+                  child: AppOutlinedButton(
+                    text: 'Add to cart',
+                    onPressed: () {
+                      context.read<UserCartCubit>().addCartItem(product);
+                      Fluttertoast.showToast(msg: 'Add Product');
+                    },
+                  ),
+                ),
+                const GapW(3),
+                Expanded(
+                  child: AppButton(
+                    text: 'Buy Now',
+                    onPressed: () {},
+                  ),
+                ),
+              ],
             ),
           )
         ],

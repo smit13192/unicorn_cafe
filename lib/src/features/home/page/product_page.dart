@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
@@ -7,6 +8,7 @@ import 'package:unicorn_cafe/src/features/home/page/category_index_cubit/categor
 import 'package:unicorn_cafe/src/features/home/page/category_product_cubit/category_product_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_type_cubit/category_type_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/product_cubit/product_cubit.dart';
+import 'package:unicorn_cafe/src/features/home/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
@@ -96,6 +98,9 @@ class _ProductView extends StatelessWidget {
               ),
               BlocBuilder<ProductCubit, List<ProductModel>>(
                 builder: (context, state) {
+                  if (state.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
                   return Column(
                     children: [
                       Row(
@@ -304,17 +309,23 @@ class _PopularProductTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Container(
-            height: 30,
-            width: 30,
-            decoration: BoxDecoration(
-              color: AppColor.primaryColor,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: const Icon(
-              Icons.add,
-              size: 15,
-              color: AppColor.white,
+          GestureDetector(
+            onTap: () {
+              context.read<UserCartCubit>().addCartItem(product);
+              Fluttertoast.showToast(msg: 'Add Product');
+            },
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                color: AppColor.primaryColor,
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: const Icon(
+                Icons.add,
+                size: 15,
+                color: AppColor.white,
+              ),
             ),
           ),
           const SizedBox(width: 5),
@@ -526,17 +537,23 @@ class CategoryProductTile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: AppColor.primaryColor,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 15,
-                        color: AppColor.white,
+                    GestureDetector(
+                      onTap: () {
+                        context.read<UserCartCubit>().addCartItem(product);
+                        Fluttertoast.showToast(msg: 'Add Product');
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: AppColor.primaryColor,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          size: 15,
+                          color: AppColor.white,
+                        ),
                       ),
                     ),
                   ],

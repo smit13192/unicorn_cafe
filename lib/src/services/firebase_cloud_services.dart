@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
+import 'package:unicorn_cafe/src/model/cart_model.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 
@@ -94,5 +95,54 @@ class FirebaseCloudService {
         .collection(AppString.likeCollection)
         .doc(lid)
         .delete();
+  }
+
+  Stream<List<CartModel>> getCartItem(String uid) {
+    return _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.cartCollection)
+        .snapshots()
+        .map<List<CartModel>>(
+          (event) => event.docs
+              .map<CartModel>((e) => CartModel.fromMap(e.data()))
+              .toList(),
+        );
+  }
+
+  void addCartItem(String uid, ProductModel product) {
+    final doc = _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.cartCollection)
+        .doc();
+    doc.set({...product.toMap(), 'cid': doc.id, 'quantity': 1});
+  }
+
+  void removeCartItem(String uid, String cid) {
+    _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.cartCollection)
+        .doc(cid)
+        .delete();
+  }
+
+  void addCartQuantity(String uid, String cid, int quantity) {
+    _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.cartCollection)
+        .doc(cid)
+        .update({'quantity': quantity});
+  } 
+  
+  void removeCartQuantity(String uid, String cid, int quantity) {
+    _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.cartCollection)
+        .doc(cid)
+        .update({'quantity': quantity});
   }
 }

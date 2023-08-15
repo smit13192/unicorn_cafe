@@ -11,6 +11,7 @@ import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/auth/googlelogin/bloc/google_login_bloc.dart';
 import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
+import 'package:unicorn_cafe/src/widget/app_outlined_button.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
 
 class GoogleLoginScreen extends StatelessWidget {
@@ -90,42 +91,14 @@ class _GoogleLoginView extends StatelessWidget {
                         ),
                         const GapW(5),
                         Expanded(
-                          child: Material(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(30),
-                            child: InkWell(
-                              splashColor:
-                                  AppColor.primaryColor.withOpacity(0.20),
-                              highlightColor:
-                                  AppColor.primaryColor.withOpacity(0.05),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoute.loginScreen,
-                                );
-                              },
-                              borderRadius: BorderRadius.circular(30),
-                              child: Container(
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(
-                                    width: 2,
-                                    color: AppColor.primaryColor,
-                                  ),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Sigh In',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: AppColor.primaryColor,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          child: AppOutlinedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoute.loginScreen,
+                              );
+                            },
+                            text: 'Sign In',
                           ),
                         ),
                       ],

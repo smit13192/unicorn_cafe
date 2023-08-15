@@ -12,4 +12,5 @@ abstract class AppColor {
   static const Color scaffoldBackgroundColor = Color(0XFFFAFAFA);
   static const Color hintTextColor = Color(0XFFA8A8A8);
   static Color shadowColor = black.withOpacity(0.10);
+  static Color lightGreyColor = const Color(0XFFF0F0F0);
 }
