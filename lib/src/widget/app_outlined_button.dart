@@ -7,6 +7,8 @@ class AppOutlinedButton extends StatelessWidget {
   final BorderRadius? borderRadius;
   final TextStyle? style;
   final Color buttonColor;
+  final EdgeInsets? margin;
+
   const AppOutlinedButton({
     super.key,
     required this.text,
@@ -14,36 +16,40 @@ class AppOutlinedButton extends StatelessWidget {
     this.borderRadius,
     this.style,
     this.buttonColor = AppColor.primaryColor,
+    this.margin,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      borderRadius: borderRadius ?? BorderRadius.circular(30),
-      child: InkWell(
-        splashColor: buttonColor.withOpacity(0.20),
-        highlightColor: buttonColor.withOpacity(0.05),
-        onTap: onPressed,
+    return Padding(
+      padding: margin ?? const EdgeInsets.all(0.0),
+      child: Material(
+        color: Colors.transparent,
         borderRadius: borderRadius ?? BorderRadius.circular(30),
-        child: Container(
-          height: 60,
-          decoration: BoxDecoration(
-            borderRadius: borderRadius ?? BorderRadius.circular(30),
-            border: Border.all(
-              width: 2,
-              color: buttonColor,
+        child: InkWell(
+          splashColor: buttonColor.withOpacity(0.20),
+          highlightColor: buttonColor.withOpacity(0.05),
+          onTap: onPressed,
+          borderRadius: borderRadius ?? BorderRadius.circular(30),
+          child: Container(
+            height: 60,
+            decoration: BoxDecoration(
+              borderRadius: borderRadius ?? BorderRadius.circular(30),
+              border: Border.all(
+                width: 2,
+                color: buttonColor,
+              ),
             ),
-          ),
-          child: Center(
-            child: Text(
-              text,
-              style: style ??
-                  TextStyle(
-                    fontSize: 17,
-                    color: buttonColor,
-                    fontWeight: FontWeight.w500,
-                  ),
+            child: Center(
+              child: Text(
+                text,
+                style: style ??
+                    TextStyle(
+                      fontSize: 17,
+                      color: buttonColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
             ),
           ),
         ),

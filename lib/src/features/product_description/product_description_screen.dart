@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
+import 'package:unicorn_cafe/src/features/cart/user_cart_id_cubit/user_cart_id_cubit.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
@@ -207,11 +207,22 @@ class ProductDescriprionView extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: AppOutlinedButton(
-                    text: 'Add to cart',
-                    onPressed: () {
-                      context.read<UserCartCubit>().addCartItem(product);
-                      Fluttertoast.showToast(msg: 'Add Product');
+                  child: BlocBuilder<UserCartIdCubit, UserCartIdState>(
+                    builder: (context, state) {
+                      bool contain = state.pid.contains(product.pid);
+                      return AppOutlinedButton(
+                        text: contain ? 'Remove to cart' : 'Add to cart',
+                        onPressed: () {
+                          if (contain) {
+                            String cid = state.getCid(product.pid);
+                            context
+                                .read<UserCartCubit>()
+                                .removeCartProduct(cid);
+                          } else {
+                            context.read<UserCartCubit>().addCartItem(product);
+                          }
+                        },
+                      );
                     },
                   ),
                 ),

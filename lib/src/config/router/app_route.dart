@@ -10,4 +10,7 @@ abstract class AppRoute {
   static const String productScreen = '/product';
   static const String productDescriptionScreen = '/product-description';
   static const String cartScreen = '/cart';
+  static const String profileScreen = '/profile';
+  static const String favoriteScreen = '/favorite';
+  static const String addressScreen = '/address';
 }

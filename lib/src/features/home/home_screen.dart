@@ -3,11 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
-import 'package:unicorn_cafe/src/features/cart/cart_screen.dart';
+import 'package:unicorn_cafe/src/features/cart/user_cart_id_cubit/user_cart_id_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/cubit/bottom_navigation_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/favorite_page.dart';
 import 'package:unicorn_cafe/src/features/home/page/product_page.dart';
-import 'package:unicorn_cafe/src/features/home/page/profile_page.dart';
 import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_like_cubit/product_like_cubit.dart';
 import 'package:unicorn_cafe/src/widget/bottom_navigation_bar.dart';
@@ -35,8 +34,6 @@ class _HomeViewState extends State<_HomeView> {
   final List<Widget> _pages = [
     const ProductPage(),
     const FavoritePage(),
-    const CartView(),
-    const ProfilePage(),
   ];
 
   @override
@@ -44,6 +41,7 @@ class _HomeViewState extends State<_HomeView> {
     super.initState();
     context.read<ProductLikeCubit>().fetchLikes();
     context.read<UserCartCubit>().getCartItem();
+    context.read<UserCartIdCubit>().getAllId();
   }
 
   @override
@@ -74,6 +72,8 @@ class _HomeViewState extends State<_HomeView> {
             onChanged: (value) {
               if (value == 2) {
                 Navigator.pushNamed(context, AppRoute.cartScreen);
+              } else if (value == 3) {
+                Navigator.pushNamed(context, AppRoute.profileScreen);
               } else {
                 context.read<BottomNavigationCubit>().indexChanged(value);
               }

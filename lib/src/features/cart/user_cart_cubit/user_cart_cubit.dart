@@ -50,12 +50,6 @@ class UserCartCubit extends Cubit<List<CartModel>> {
     );
   }
 
-  double get totalPrice {
-    return state.fold<double>(0.0, (previousValue, element) {
-      return previousValue += element.price * element.quantity;
-    });
-  }
-
   @override
   Future<void> close() {
     subscription?.cancel();

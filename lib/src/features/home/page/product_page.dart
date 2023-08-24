@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
+import 'package:unicorn_cafe/src/features/cart/user_cart_id_cubit/user_cart_id_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_index_cubit/category_index_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_product_cubit/category_product_cubit.dart';
 import 'package:unicorn_cafe/src/features/home/page/category_type_cubit/category_type_cubit.dart';
@@ -309,27 +309,36 @@ class _PopularProductTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Material(
-            color: AppColor.primaryColor,
-            borderRadius: BorderRadius.circular(18),
-            elevation: 3,
-            shadowColor: AppColor.primaryColor.withOpacity(0.50),
-            child: InkWell(
-              onTap: () {
-                context.read<UserCartCubit>().addCartItem(product);
-                Fluttertoast.showToast(msg: 'Add Product');
-              },
-              borderRadius: BorderRadius.circular(18),
-              child: const SizedBox(
-                height: 30,
-                width: 30,
-                child: Icon(
-                  Icons.add,
-                  size: 15,
-                  color: AppColor.white,
+          BlocBuilder<UserCartIdCubit, UserCartIdState>(
+            builder: (context, state) {
+              bool contain = state.pid.contains(product.pid);
+              return Material(
+                color: AppColor.primaryColor,
+                borderRadius: BorderRadius.circular(18),
+                elevation: 3,
+                shadowColor: AppColor.primaryColor.withOpacity(0.50),
+                child: InkWell(
+                  onTap: () {
+                    if (contain) {
+                      String cid = state.getCid(product.pid);
+                      context.read<UserCartCubit>().removeCartProduct(cid);
+                    } else {
+                      context.read<UserCartCubit>().addCartItem(product);
+                    }
+                  },
+                  borderRadius: BorderRadius.circular(18),
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Icon(
+                      contain ? Icons.shopping_bag_outlined : Icons.add,
+                      size: 15,
+                      color: AppColor.white,
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(width: 5),
         ],
@@ -540,27 +549,42 @@ class CategoryProductTile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Material(
-                      color: AppColor.primaryColor,
-                      borderRadius: BorderRadius.circular(18),
-                      elevation: 3,
-                      shadowColor: AppColor.primaryColor.withOpacity(0.50),
-                      child: InkWell(
-                        onTap: () {
-                          context.read<UserCartCubit>().addCartItem(product);
-                          Fluttertoast.showToast(msg: 'Add Product');
-                        },
-                        borderRadius: BorderRadius.circular(18),
-                        child: const SizedBox(
-                          height: 30,
-                          width: 30,
-                          child: Icon(
-                            Icons.add,
-                            size: 15,
-                            color: AppColor.white,
+                    BlocBuilder<UserCartIdCubit, UserCartIdState>(
+                      builder: (context, state) {
+                        bool contain = state.pid.contains(product.pid);
+                        return Material(
+                          color: AppColor.primaryColor,
+                          borderRadius: BorderRadius.circular(18),
+                          elevation: 3,
+                          shadowColor: AppColor.primaryColor.withOpacity(0.50),
+                          child: InkWell(
+                            onTap: () {
+                              if (contain) {
+                                String cid = state.getCid(product.pid);
+                                context
+                                    .read<UserCartCubit>()
+                                    .removeCartProduct(cid);
+                              } else {
+                                context
+                                    .read<UserCartCubit>()
+                                    .addCartItem(product);
+                              }
+                            },
+                            borderRadius: BorderRadius.circular(18),
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Icon(
+                                contain
+                                    ? Icons.shopping_bag_outlined
+                                    : Icons.add,
+                                size: 15,
+                                color: AppColor.white,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),

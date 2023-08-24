@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
-import 'package:unicorn_cafe/src/features/home/page/product_cubit/product_cubit.dart';
 import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
+import 'package:unicorn_cafe/src/features/cart/user_cart_id_cubit/user_cart_id_cubit.dart';
+import 'package:unicorn_cafe/src/features/home/page/product_cubit/product_cubit.dart';
 import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 import 'package:unicorn_cafe/src/widget/product_tile.dart';
 
@@ -77,11 +77,26 @@ class _ProductView extends StatelessWidget {
                         arguments: product,
                       );
                     },
-                    child: ProductTile(
-                      product: product,
-                      onPressed: () {
-                        context.read<UserCartCubit>().addCartItem(product);
-                        Fluttertoast.showToast(msg: 'Add Product');
+                    child: BlocBuilder<UserCartIdCubit, UserCartIdState>(
+                      builder: (context, state) {
+                        bool contain = state.pid.contains(product.pid);
+                        return ProductTile(
+                          product: product,
+                          onPressed: () {
+                            if (contain) {
+                              String cid = state.getCid(product.pid);
+                              context
+                                  .read<UserCartCubit>()
+                                  .removeCartProduct(cid);
+                            } else {
+                              context
+                                  .read<UserCartCubit>()
+                                  .addCartItem(product);
+                            }
+                          },
+                          icon:
+                              contain ? Icons.shopping_bag_outlined : Icons.add,
+                        );
                       },
                     ),
                   );

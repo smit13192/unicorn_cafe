@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_cafe/src/features/address/address_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/googlelogin/google_login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/register/register_screen.dart';
 import 'package:unicorn_cafe/src/features/cart/cart_screen.dart';
+import 'package:unicorn_cafe/src/features/favorite/favorite_screen.dart';
 import 'package:unicorn_cafe/src/features/home/home_screen.dart';
 import 'package:unicorn_cafe/src/features/onbording/onboarding_screen.dart';
 import 'package:unicorn_cafe/src/features/product/product_screen.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_description_screen.dart';
+import 'package:unicorn_cafe/src/features/profile/profile_screen.dart';
 import 'package:unicorn_cafe/src/features/splash/splash_screen.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 
@@ -52,6 +55,18 @@ abstract class AppRouter {
       case AppRoute.cartScreen:
         return MaterialPageRoute(
           builder: (context) => const CartScreen(),
+        );
+      case AppRoute.profileScreen:
+        return MaterialPageRoute(
+          builder: (context) => const ProfileScreen(),
+        );
+      case AppRoute.favoriteScreen:
+        return MaterialPageRoute(
+          builder: (context) => const FavoriteScreen(),
+        );
+      case AppRoute.addressScreen:
+        return MaterialPageRoute(
+          builder: (context) => const AddressScreen(),
         );
       default:
         return null;

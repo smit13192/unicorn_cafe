@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
+import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/model/cart_model.dart';
@@ -121,7 +122,12 @@ class CartView extends StatelessWidget {
                       child: AppButton(
                         borderRadius: BorderRadius.circular(10),
                         text: 'Process to Buy',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoute.addressScreen,
+                          );
+                        },
                       ),
                     )
                   ],

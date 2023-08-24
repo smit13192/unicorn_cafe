@@ -9,10 +9,12 @@ class ProductTile extends StatelessWidget {
     super.key,
     required this.product,
     required this.onPressed,
+    required this.icon,
   });
 
   final Function() onPressed;
   final ProductModel product;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +93,11 @@ class ProductTile extends StatelessWidget {
                       child: InkWell(
                         onTap: onPressed,
                         borderRadius: BorderRadius.circular(18),
-                        child: const SizedBox(
+                        child: SizedBox(
                           height: 30,
                           width: 30,
                           child: Icon(
-                            Icons.add,
+                            icon,
                             size: 15,
                             color: AppColor.white,
                           ),

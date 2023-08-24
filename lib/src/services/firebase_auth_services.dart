@@ -59,6 +59,11 @@ class FirebaseAuthService {
   bool get isLogin => FirebaseAuth.instance.currentUser != null;
 
   String get uid => FirebaseAuth.instance.currentUser?.uid ?? '';
+  String get email => FirebaseAuth.instance.currentUser?.email ?? '';
+
+  void logOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   String getErrorMessage(String errorCode) {
     switch (errorCode) {

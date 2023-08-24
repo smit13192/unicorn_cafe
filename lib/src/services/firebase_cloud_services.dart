@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
+import 'package:unicorn_cafe/src/model/cart_id_model.dart';
 import 'package:unicorn_cafe/src/model/cart_model.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
@@ -106,6 +107,19 @@ class FirebaseCloudService {
         .map<List<CartModel>>(
           (event) => event.docs
               .map<CartModel>((e) => CartModel.fromMap(e.data()))
+              .toList(),
+        );
+  }
+  
+  Stream<List<CartIdModel>> getCartItemProductId(String uid) {
+    return _instance
+        .collection(AppString.userCollection)
+        .doc(uid)
+        .collection(AppString.cartCollection)
+        .snapshots()
+        .map<List<CartIdModel>>(
+          (event) => event.docs
+              .map<CartIdModel>((e) => CartIdModel.fromMap(e.data()))
               .toList(),
         );
   }
