@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return AppRepositoryProvider(
       child: AppBlocProvider(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           onGenerateRoute: AppRouter.onGenerateRoute,
           initialRoute: AppRoute.splashScreen,
           theme: ThemeData(

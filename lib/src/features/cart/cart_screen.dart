@@ -1,45 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
+import 'package:unicorn_cafe/src/config/images/app_image.dart';
 import 'package:unicorn_cafe/src/config/router/app_router.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/cart/user_cart_cubit/user_cart_cubit.dart';
 import 'package:unicorn_cafe/src/model/cart_model.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
 import 'package:unicorn_cafe/src/widget/cart_tile.dart';
+import 'package:unicorn_cafe/src/widget/gap.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.scaffoldBackgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Cart',
-          style: TextStyle(
-            color: AppColor.primaryColor,
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
+    return BlocBuilder<UserCartCubit, List<CartModel>>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor:
+              state.isEmpty ? AppColor.white : AppColor.scaffoldBackgroundColor,
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(
+              'Cart',
+              style: TextStyle(
+                color: AppColor.primaryColor,
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: AppColor.primaryColor,
+              ),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+            ),
           ),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColor.primaryColor,
-          ),
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-        ),
-      ),
-      body: const CartView(),
+          body: const CartView(),
+        );
+      },
     );
   }
 }
@@ -51,6 +58,29 @@ class CartView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserCartCubit, List<CartModel>>(
       builder: (context, state) {
+        if (state.isEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(AppImage.emptyCart),
+              const GapH(3),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoute.productScreen);
+                },
+                child: const Text(
+                  'Product Explore',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: AppColor.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
         double totalPrice = state.fold<double>(0.0, (previousValue, element) {
           return previousValue += element.price * element.quantity;
         });
