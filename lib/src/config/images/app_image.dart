@@ -7,4 +7,7 @@ abstract class AppImage {
   static const String coffeeCup3 = 'assets/images/onboarding/coffee-cup-3.png';
   static const String bg3 = 'assets/images/onboarding/bg-3.png';
   static const String googleLogin = 'assets/images/google-login.png';
+  static const String star = 'assets/images/png/star.png';
+  static const String emptyCart = 'assets/images/png/empty-cart.png';
+  static const String emptyFavorite = 'assets/images/png/empty-favorite.png';
 }
