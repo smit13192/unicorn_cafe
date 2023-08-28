@@ -50,60 +50,53 @@ class _ProductView extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
       ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 3.w, right: 3.w),
-        child: BlocBuilder<ProductCubit, List<ProductModel>>(
-          builder: (context, state) {
-            return NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (notification) {
-                notification.disallowIndicator();
-                return true;
-              },
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 50.w,
-                  crossAxisSpacing: 3.w,
-                  childAspectRatio: 0.65,
-                ),
-                itemCount: state.length,
-                itemBuilder: (context, index) {
-                  ProductModel product = state[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoute.productDescriptionScreen,
-                        arguments: product,
+      body: BlocBuilder<ProductCubit, List<ProductModel>>(
+        builder: (context, state) {
+          return NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (notification) {
+              notification.disallowIndicator();
+              return true;
+            },
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 50.w,
+                childAspectRatio: 0.65,
+              ),
+              itemCount: state.length,
+              itemBuilder: (context, index) {
+                ProductModel product = state[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoute.productDescriptionScreen,
+                      arguments: product,
+                    );
+                  },
+                  child: BlocBuilder<UserCartIdCubit, UserCartIdState>(
+                    builder: (context, state) {
+                      bool contain = state.pid.contains(product.pid);
+                      return ProductTile(
+                        product: product,
+                        onPressed: () {
+                          if (contain) {
+                            String cid = state.getCid(product.pid);
+                            context
+                                .read<UserCartCubit>()
+                                .removeCartProduct(cid);
+                          } else {
+                            context.read<UserCartCubit>().addCartItem(product);
+                          }
+                        },
+                        icon: contain ? Icons.shopping_bag_outlined : Icons.add,
                       );
                     },
-                    child: BlocBuilder<UserCartIdCubit, UserCartIdState>(
-                      builder: (context, state) {
-                        bool contain = state.pid.contains(product.pid);
-                        return ProductTile(
-                          product: product,
-                          onPressed: () {
-                            if (contain) {
-                              String cid = state.getCid(product.pid);
-                              context
-                                  .read<UserCartCubit>()
-                                  .removeCartProduct(cid);
-                            } else {
-                              context
-                                  .read<UserCartCubit>()
-                                  .addCartItem(product);
-                            }
-                          },
-                          icon:
-                              contain ? Icons.shopping_bag_outlined : Icons.add,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }

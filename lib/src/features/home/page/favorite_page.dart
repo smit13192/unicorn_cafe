@@ -18,125 +18,119 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 3.w, right: 3.w),
-      child: BlocBuilder<ProductLikeCubit, List<LikeModel>>(
-        builder: (context, state) {
-          if (state.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(AppImage.emptyFavorite),
-                const GapH(3),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoute.productScreen);
-                  },
-                  child: const Text(
-                    'Product Explore',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: AppColor.primaryColor,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
-                    ),
+    return BlocBuilder<ProductLikeCubit, List<LikeModel>>(
+      builder: (context, state) {
+        if (state.isEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(AppImage.emptyFavorite),
+              const GapH(3),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, AppRoute.productScreen);
+                },
+                child: const Text(
+                  'Product Explore',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: AppColor.primaryColor,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
                   ),
                 ),
-              ],
-            );
-          }
-          return NotificationListener<OverscrollIndicatorNotification>(
-            onNotification: (notification) {
-              notification.disallowIndicator();
-              return true;
-            },
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 50.w,
-                crossAxisSpacing: 3.w,
-                mainAxisSpacing: 3.w,
-                childAspectRatio: 0.65,
               ),
-              itemCount: state.length,
-              itemBuilder: (context, index) {
-                LikeModel like = state[index];
-                return FutureBuilder<ProductModel>(
-                  future:
-                      context.read<FirebaseCloudService>().getProduct(like.pid),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox.shrink();
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      ProductModel productModel = snapshot.data!;
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoute.productDescriptionScreen,
-                            arguments: productModel,
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            BlocBuilder<UserCartIdCubit, UserCartIdState>(
-                              builder: (context, state) {
-                                bool contain =
-                                    state.pid.contains(productModel.pid);
-                                return ProductTile(
-                                  product: productModel,
-                                  onPressed: () {
-                                    if (contain) {
-                                      String cid =
-                                          state.getCid(productModel.pid);
-                                      context
-                                          .read<UserCartCubit>()
-                                          .removeCartProduct(cid);
-                                    } else {
-                                      context
-                                          .read<UserCartCubit>()
-                                          .addCartItem(productModel);
-                                    }
-                                  },
-                                  icon: contain
-                                      ? Icons.shopping_bag_outlined
-                                      : Icons.add,
-                                );
-                              },
-                            ),
-                            Positioned(
-                              right: 0,
-                              child: IconButton(
-                                splashColor: Colors.transparent,
-                                onPressed: () {
-                                  context.read<ProductLikeCubit>().removeLikes(
-                                        state
-                                            .where(
-                                              (e) => productModel.pid == e.pid,
-                                            )
-                                            .toList()
-                                            .first
-                                            .lid,
-                                      );
-                                },
-                                icon: const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                    return Container();
-                  },
-                );
-              },
-            ),
+            ],
           );
-        },
-      ),
+        }
+        return NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (notification) {
+            notification.disallowIndicator();
+            return true;
+          },
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 50.w,
+              childAspectRatio: 0.65,
+            ),
+            itemCount: state.length,
+            itemBuilder: (context, index) {
+              LikeModel like = state[index];
+              return FutureBuilder<ProductModel>(
+                future:
+                    context.read<FirebaseCloudService>().getProduct(like.pid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox.shrink();
+                  }
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    ProductModel productModel = snapshot.data!;
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoute.productDescriptionScreen,
+                          arguments: productModel,
+                        );
+                      },
+                      child: Stack(
+                        children: [
+                          BlocBuilder<UserCartIdCubit, UserCartIdState>(
+                            builder: (context, state) {
+                              bool contain =
+                                  state.pid.contains(productModel.pid);
+                              return ProductTile(
+                                product: productModel,
+                                onPressed: () {
+                                  if (contain) {
+                                    String cid = state.getCid(productModel.pid);
+                                    context
+                                        .read<UserCartCubit>()
+                                        .removeCartProduct(cid);
+                                  } else {
+                                    context
+                                        .read<UserCartCubit>()
+                                        .addCartItem(productModel);
+                                  }
+                                },
+                                icon: contain
+                                    ? Icons.shopping_bag_outlined
+                                    : Icons.add,
+                              );
+                            },
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: IconButton(
+                              splashColor: Colors.transparent,
+                              onPressed: () {
+                                context.read<ProductLikeCubit>().removeLikes(
+                                      state
+                                          .where(
+                                            (e) => productModel.pid == e.pid,
+                                          )
+                                          .toList()
+                                          .first
+                                          .lid,
+                                    );
+                              },
+                              icon: const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                  return Container();
+                },
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
