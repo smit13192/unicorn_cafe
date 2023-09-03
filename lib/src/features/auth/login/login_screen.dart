@@ -1,4 +1,5 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -84,13 +85,29 @@ class _LoginView extends StatelessWidget {
                 const GapH(3.5),
                 const _PasswordTextField(),
                 const GapH(1.5),
-                const Text(
-                  'Forgot Password?',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    color: AppColor.primaryColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap: () async {
+                    final String email = context.read<LoginBloc>().state.email;
+                    bool valid = EmailValidator.validate(email);
+                    if (valid) {
+                      try {
+                        await FirebaseAuth.instance
+                            .sendPasswordResetEmail(email: email);
+                      } catch(e) {
+                        Fluttertoast.showToast(msg: 'Email is not found');
+                      }
+                    } else {
+                      Fluttertoast.showToast(msg: 'Enter valid email');
+                    }
+                  },
+                  child: const Text(
+                    'Forgot Password?',
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: AppColor.primaryColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
                 const GapH(1.5),

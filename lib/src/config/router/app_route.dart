@@ -13,4 +13,5 @@ abstract class AppRoute {
   static const String profileScreen = '/profile';
   static const String favoriteScreen = '/favorite';
   static const String addressScreen = '/address';
+  static const String searchScreen = '/search';
 }

@@ -10,6 +10,7 @@ import 'package:unicorn_cafe/src/features/onbording/onboarding_screen.dart';
 import 'package:unicorn_cafe/src/features/product/product_screen.dart';
 import 'package:unicorn_cafe/src/features/product_description/product_description_screen.dart';
 import 'package:unicorn_cafe/src/features/profile/profile_screen.dart';
+import 'package:unicorn_cafe/src/features/search/search_screen.dart';
 import 'package:unicorn_cafe/src/features/splash/splash_screen.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 
@@ -43,8 +44,9 @@ abstract class AppRouter {
           builder: (context) => const HomeScreen(),
         );
       case AppRoute.productScreen:
+        List<ProductModel> products = settings.arguments as List<ProductModel>;
         return MaterialPageRoute(
-          builder: (context) => const ProductScreen(),
+          builder: (context) => ProductScreen(products: products),
         );
       case AppRoute.productDescriptionScreen:
         final ProductModel productModel = settings.arguments as ProductModel;
@@ -67,6 +69,10 @@ abstract class AppRouter {
       case AppRoute.addressScreen:
         return MaterialPageRoute(
           builder: (context) => const AddressScreen(),
+        );
+      case AppRoute.searchScreen:
+        return MaterialPageRoute(
+          builder: (context) => const SearchScreen(),
         );
       default:
         return null;
