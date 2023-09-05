@@ -44,9 +44,10 @@ abstract class AppRouter {
           builder: (context) => const HomeScreen(),
         );
       case AppRoute.productScreen:
-        List<ProductModel> products = settings.arguments as List<ProductModel>;
+        List<ProductModel>? products =
+            settings.arguments as List<ProductModel>?;
         return MaterialPageRoute(
-          builder: (context) => ProductScreen(products: products),
+          builder: (context) => ProductScreen(products: products), 
         );
       case AppRoute.productDescriptionScreen:
         final ProductModel productModel = settings.arguments as ProductModel;

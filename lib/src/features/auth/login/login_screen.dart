@@ -93,7 +93,7 @@ class _LoginView extends StatelessWidget {
                       try {
                         await FirebaseAuth.instance
                             .sendPasswordResetEmail(email: email);
-                      } catch(e) {
+                      } catch (e) {
                         Fluttertoast.showToast(msg: 'Email is not found');
                       }
                     } else {
@@ -118,7 +118,7 @@ class _LoginView extends StatelessWidget {
                       context.read<LoginBloc>().add(LoginSubmitEvent());
                     }
                   },
-                )
+                ),
               ],
             ),
           ),
