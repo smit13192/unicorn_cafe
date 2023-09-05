@@ -106,7 +106,7 @@ class _ProductView extends StatelessWidget {
                       Row(
                         children: [
                           const Text(
-                            'Populer 🔥',
+                            'Popular 🔥',
                             style: TextStyle(
                               color: AppColor.primaryColor,
                               fontSize: 20,
