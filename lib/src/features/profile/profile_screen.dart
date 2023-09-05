@@ -91,7 +91,7 @@ class ProfileView extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const GapH(3),

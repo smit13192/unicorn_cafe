@@ -119,7 +119,7 @@ class FavoritePage extends StatelessWidget {
                                 color: Colors.red,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     );

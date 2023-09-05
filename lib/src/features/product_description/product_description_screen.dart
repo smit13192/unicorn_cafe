@@ -235,7 +235,7 @@ class ProductDescriprionView extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

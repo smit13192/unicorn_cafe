@@ -129,7 +129,7 @@ class _ProductView extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 15),
@@ -386,7 +386,7 @@ class _SearchField extends StatelessWidget {
                   color: AppColor.hintTextColor,
                   fontSize: 15,
                 ),
-              )
+              ),
             ],
           ),
         ),
