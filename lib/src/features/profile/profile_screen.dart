@@ -124,7 +124,7 @@ class ProfileView extends StatelessWidget {
                 onTap: () {},
               ),
               _ProfileTile(
-                text: 'Address',
+                text: 'About',
                 onTap: () {},
               ),
             ],

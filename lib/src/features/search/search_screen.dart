@@ -76,7 +76,7 @@ class _SearchViewState extends State<SearchView> {
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  hintText: 'Serach Coffee',
+                  hintText: 'Search Coffee',
                   hintStyle: const TextStyle(
                     color: AppColor.hintTextColor,
                     fontSize: 15,
