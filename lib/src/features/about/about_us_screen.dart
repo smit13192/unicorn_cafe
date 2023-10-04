@@ -52,7 +52,7 @@ class AboutUsScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.only(top: 10.0, left: 8.0, bottom: 10.0),
                 child: Text(
-                  'UNICORN CAFE is one stop shop for all your coffee and lifestyle needs.Begin India\'s largest coffee products,UNICORN aims at providing a hassle free and enjoyable shopping experience to shoppers across the country with the widest range of products on its portal.',
+                  'UNICORN CAFE is one of the Coffee Shop. Cafe is guaranteed to become the daily necessity for all the coffee addicts. A place with good ambience where people can escape from their daily stress and cherish with a morning cup of coffee. Our café offers homestyle delicious breakfast and snacks. We focus on finding the most aromatic and exotic coffee beans. We have our branches in many states of India. We have a romantic ambience which attracts youth. Our cafe has spectacular interior designs with stupendous taste of coffee. We have attached our menu which contains multi-cuisines at attractive prices.',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppColor.black.withOpacity(0.5),
