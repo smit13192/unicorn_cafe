@@ -96,10 +96,6 @@ class ProfileView extends StatelessWidget {
               ),
               const GapH(3),
               _ProfileTile(
-                text: 'Orders',
-                onTap: () {},
-              ),
-              _ProfileTile(
                 text: 'Carts',
                 onTap: () {
                   Navigator.pushNamed(context, AppRoute.cartScreen);
@@ -113,19 +109,23 @@ class ProfileView extends StatelessWidget {
               ),
               _ProfileTile(
                 text: 'Customer Care',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.aboutUs,
+                    arguments: 'Customer Care',
+                  );
+                },
               ),
               _ProfileTile(
-                text: 'My Rewards',
-                onTap: () {},
-              ),
-              _ProfileTile(
-                text: 'Saved Card',
-                onTap: () {},
-              ),
-              _ProfileTile(
-                text: 'About',
-                onTap: () {},
+                text: 'About us',
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoute.aboutUs,
+                    arguments: 'About us',
+                  );
+                },
               ),
             ],
           ),

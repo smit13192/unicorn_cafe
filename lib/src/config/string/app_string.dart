@@ -7,4 +7,6 @@ abstract class AppString {
   static const String userCollection = 'users';
   static const String likeCollection = 'likes';
   static const String cartCollection = 'cart';
+  static const String addressCollection = 'address';
+  static const String orderCollection = 'orders';
 }

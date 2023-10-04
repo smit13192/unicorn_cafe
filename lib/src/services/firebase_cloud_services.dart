@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:unicorn_cafe/src/config/string/app_string.dart';
+import 'package:unicorn_cafe/src/config/utils/either_result.dart';
 import 'package:unicorn_cafe/src/model/cart_id_model.dart';
 import 'package:unicorn_cafe/src/model/cart_model.dart';
 import 'package:unicorn_cafe/src/model/like_model.dart';
@@ -110,7 +112,7 @@ class FirebaseCloudService {
               .toList(),
         );
   }
-  
+
   Stream<List<CartIdModel>> getCartItemProductId(String uid) {
     return _instance
         .collection(AppString.userCollection)
@@ -149,8 +151,8 @@ class FirebaseCloudService {
         .collection(AppString.cartCollection)
         .doc(cid)
         .update({'quantity': quantity});
-  } 
-  
+  }
+
   void removeCartQuantity(String uid, String cid, int quantity) {
     _instance
         .collection(AppString.userCollection)
@@ -158,5 +160,50 @@ class FirebaseCloudService {
         .collection(AppString.cartCollection)
         .doc(cid)
         .update({'quantity': quantity});
+  }
+
+  Future<EitherResult<bool>> saveOrders(
+    String uid,
+    String email,
+    DateTime date, {
+    required List<CartModel> orders,
+    required Map<String, dynamic> addressData,
+  }) async {
+    try {
+      final doc = _instance.collection(AppString.orderCollection).doc();
+      await _instance
+          .collection(AppString.addressCollection)
+          .doc(uid)
+          .set(addressData);
+      List<Map<String, dynamic>> orderData =
+          orders.map((e) => e.toMap()).toList();
+      await doc.set({
+        'order': orderData,
+        'uid': uid,
+        'email': email,
+        'oid': doc.id,
+        'date': Timestamp.fromDate(date),
+      });
+      return right(true);
+    } catch (e) {
+      return left('Order not save successfully');
+    }
+  }
+
+  Future<EitherResult<Map<String, dynamic>>> getUserAddress(String uid) async {
+    try {
+      final snapshot = await _instance
+          .collection(AppString.addressCollection)
+          .doc(uid)
+          .get();
+      if (snapshot.exists) {
+        if (snapshot.data() != null) {
+          return right(snapshot.data()!);
+        }
+      }
+      return left('Address is not save in our database');
+    } catch (e) {
+      return left('Address not save successfully');
+    }
   }
 }

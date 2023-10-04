@@ -1,115 +1,167 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading/screen_loading_controller.dart';
 import 'package:unicorn_cafe/src/config/color/app_color.dart';
-import 'package:unicorn_cafe/src/config/router/app_router.dart';
+import 'package:unicorn_cafe/src/config/utils/either_result.dart';
+import 'package:unicorn_cafe/src/config/utils/formz_status.dart';
 import 'package:unicorn_cafe/src/config/utils/size_extension.dart';
 import 'package:unicorn_cafe/src/features/address/bloc/address_bloc.dart';
+import 'package:unicorn_cafe/src/model/cart_model.dart';
 import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
+import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 import 'package:unicorn_cafe/src/widget/app_button.dart';
 import 'package:unicorn_cafe/src/widget/gap.dart';
 
 class AddressScreen extends StatelessWidget {
-  const AddressScreen({super.key});
+  final List<CartModel> orders;
+  const AddressScreen({super.key, required this.orders});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddressBloc(),
-      child: AddressView(),
+      create: (context) => AddressBloc(
+        firebaseAuthService: context.read<FirebaseAuthService>(),
+        firebaseCloudService: context.read<FirebaseCloudService>(),
+      ),
+      child: _AddressView(orders),
     );
   }
 }
 
-class AddressView extends StatelessWidget {
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+class _AddressView extends StatefulWidget {
+  final List<CartModel> orders;
   @override
-  AddressView({super.key});
+  const _AddressView(this.orders);
+
+  @override
+  State<_AddressView> createState() => _AddressViewState();
+}
+
+class _AddressViewState extends State<_AddressView> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController mobileNoController = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    getAddress();
+  }
+
+  void getAddress() async {
+    String uid = context.read<FirebaseAuthService>().uid;
+    EitherResult<Map<String, dynamic>> result =
+        await context.read<FirebaseCloudService>().getUserAddress(uid);
+    result.fold(
+      (l) {
+        emailController.text = context.read<FirebaseAuthService>().email;
+        context
+            .read<AddressBloc>()
+            .add(EmailChangeEvent(context.read<FirebaseAuthService>().email));
+      },
+      (r) {
+        mobileNoController.text = r['mobileNo'];
+        emailController.text = r['email'];
+        usernameController.text = r['username'];
+        context.read<AddressBloc>().add(
+              GetDefaultEvent(
+                username: r['username'],
+                email: r['email'],
+                mobileNo: r['mobileNo'],
+              ),
+            );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    mobileNoController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Add Address',
-          style: TextStyle(
-            color: AppColor.primaryColor,
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
+    return BlocListener<AddressBloc, AddressState>(
+      listener: (context, state) {
+        if (state.status.isLoading) {
+          ScreenLoadingController.instance.hide();
+          ScreenLoadingController.instance.show(context);
+        } else {
+          ScreenLoadingController.instance.hide();
+        }
+        if (state.status.isFailed) {
+          Fluttertoast.showToast(msg: state.error);
+        } else if (state.status.isSuccess) {
+          Fluttertoast.showToast(
+            msg: 'You go to the cafe and collect your order',
+          );
+          Navigator.pop(context);
+        }
+      },
+      child: Scaffold(
+        extendBody: true,
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Add Address',
+            style: TextStyle(
+              color: AppColor.primaryColor,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: AppColor.primaryColor,
+            ),
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
           ),
         ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
+        body: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (notification) {
+            notification.disallowIndicator();
+            return true;
           },
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColor.primaryColor,
-          ),
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-        ),
-      ),
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (notification) {
-          notification.disallowIndicator();
-          return true;
-        },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.5.w),
-            child: Form(
-              key: _key,
-              child: const Column(
-                children: [
-                  _FullNameTextField(),
-                  GapH(3.5),
-                  _EmailTextField(),
-                  GapH(3.5),
-                  _MobileNumberTextField(),
-                  GapH(3.5),
-                  Row(
-                    children: [
-                      Expanded(child: _PincodeTextField()),
-                      GapW(5),
-                      Expanded(child: _CityTextField()),
-                    ],
-                  ),
-                  GapH(3.5),
-                  _StateTextField(),
-                  GapH(3.5),
-                  _AreaTextField(),
-                  GapH(3.5),
-                  _FlatTextField(),
-                  GapH(3.5),
-                  _AddressCheckBox(),
-                ],
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.5.w),
+              child: Form(
+                key: _key,
+                child: Column(
+                  children: [
+                    _FullNameTextField(usernameController),
+                    const GapH(3.5),
+                    _EmailTextField(emailController),
+                    const GapH(3.5),
+                    _MobileNumberTextField(mobileNoController),
+                    const GapH(3.5),
+                    AppButton(
+                      text: 'Confirm Your Order',
+                      onPressed: () {
+                        if (_key.currentState!.validate()) {
+                          context
+                              .read<AddressBloc>()
+                              .add(SubmitEvent(widget.orders));
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
-        child: AppButton(
-          text: 'Proceed to pay',
-          onPressed: () {
-            if (_key.currentState!.validate()) {
-              context.read<AddressBloc>().add(SubmitEvent());
-              Fluttertoast.showToast(
-                msg: 'You go to the cafe and collect your order',
-              );
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                AppRoute.homeScreen,
-                (route) => false,
-              );
-            }
-          },
         ),
       ),
     );
@@ -117,11 +169,13 @@ class AddressView extends StatelessWidget {
 }
 
 class _FullNameTextField extends StatelessWidget {
-  const _FullNameTextField();
+  final TextEditingController controller;
+  const _FullNameTextField(this.controller);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       keyboardType: TextInputType.text,
       onChanged: (value) {
         context.read<AddressBloc>().add(UsernameChangeEvent(value));
@@ -139,23 +193,9 @@ class _FullNameTextField extends StatelessWidget {
   }
 }
 
-class _EmailTextField extends StatefulWidget {
-  const _EmailTextField();
-
-  @override
-  State<_EmailTextField> createState() => _EmailTextFieldState();
-}
-
-class _EmailTextFieldState extends State<_EmailTextField> {
-  TextEditingController controller = TextEditingController();
-
-  @override
-  void initState() {
-    String email = context.read<FirebaseAuthService>().email;
-    controller.text = email;
-    context.read<AddressBloc>().add(EmailChangeEvent(email));
-    super.initState();
-  }
+class _EmailTextField extends StatelessWidget {
+  final TextEditingController controller;
+  const _EmailTextField(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +223,13 @@ class _EmailTextFieldState extends State<_EmailTextField> {
 }
 
 class _MobileNumberTextField extends StatelessWidget {
-  const _MobileNumberTextField();
+  final TextEditingController controller;
+  const _MobileNumberTextField(this.controller);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       keyboardType: TextInputType.phone,
       onChanged: (value) {
         context.read<AddressBloc>().add(MobileNoChangeEvent(value));
@@ -201,158 +243,6 @@ class _MobileNumberTextField extends StatelessWidget {
       },
       decoration: const InputDecoration(
         hintText: 'Enter Mobile Number',
-      ),
-    );
-  }
-}
-
-class _PincodeTextField extends StatelessWidget {
-  const _PincodeTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.phone,
-      onChanged: (value) {
-        context.read<AddressBloc>().add(PincodeChangeEvent(value));
-      },
-      validator: (value) {
-        final regExp = RegExp(r'(^(?:[+0]9)?[0-9]{6}$)');
-        if (value == null || !regExp.hasMatch(value)) {
-          return 'Enter pincode';
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        hintText: 'Pincode',
-      ),
-    );
-  }
-}
-
-class _CityTextField extends StatelessWidget {
-  const _CityTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      onChanged: (value) {
-        context.read<AddressBloc>().add(CityChangeEvent(value));
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Enter city';
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        hintText: 'City',
-      ),
-    );
-  }
-}
-
-class _StateTextField extends StatelessWidget {
-  const _StateTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      onChanged: (value) {
-        context.read<AddressBloc>().add(StateChangeEvent(value));
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Enter state';
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        hintText: 'State',
-      ),
-    );
-  }
-}
-
-class _AreaTextField extends StatelessWidget {
-  const _AreaTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      onChanged: (value) {
-        context.read<AddressBloc>().add(AreaChangeEvent(value));
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Enter area';
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        hintText: 'Locality / Area / Street',
-      ),
-    );
-  }
-}
-
-class _FlatTextField extends StatelessWidget {
-  const _FlatTextField();
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      onChanged: (value) {
-        context.read<AddressBloc>().add(FlatNameChangeEvent(value));
-      },
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Enter flat number/Building Name';
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        hintText: 'Flat no / Building Name',
-      ),
-    );
-  }
-}
-
-class _AddressCheckBox extends StatelessWidget {
-  const _AddressCheckBox();
-
-  @override
-  Widget build(BuildContext context) {
-    bool save = context.select((AddressBloc value) => value.state.save);
-    return Transform.translate(
-      offset: const Offset(-10, 0),
-      child: Row(
-        children: [
-          Transform.scale(
-            scale: 1.2,
-            child: Checkbox(
-              value: save,
-              onChanged: (value) {
-                context.read<AddressBloc>().add(AddressSaveChangeEvent(value!));
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          const Text(
-            'Mark as default address',
-            style: TextStyle(
-              fontSize: 15,
-              color: AppColor.primaryColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -156,6 +156,7 @@ class CartView extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             AppRoute.addressScreen,
+                            arguments: state,
                           );
                         },
                       ),

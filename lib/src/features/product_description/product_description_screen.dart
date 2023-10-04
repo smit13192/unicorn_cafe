@@ -229,10 +229,18 @@ class ProductDescriprionView extends StatelessWidget {
                 ),
                 const GapW(3),
                 Expanded(
-                  child: AppButton(
-                    text: 'Buy Now',
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(AppRoute.addressScreen);
+                  child: BlocBuilder<UserCartIdCubit, UserCartIdState>(
+                    builder: (context, state) {
+                      return AppButton(
+                        text: 'Buy Now',
+                        onPressed: () {
+                          bool contain = state.pid.contains(product.pid);
+                          if (!contain) {
+                            context.read<UserCartCubit>().addCartItem(product);
+                          }
+                          Navigator.of(context).pushNamed(AppRoute.cartScreen);
+                        },
+                      );
                     },
                   ),
                 ),

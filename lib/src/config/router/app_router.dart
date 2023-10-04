@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_cafe/src/features/about/about_us_screen.dart';
 import 'package:unicorn_cafe/src/features/address/address_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/googlelogin/google_login_screen.dart';
 import 'package:unicorn_cafe/src/features/auth/login/login_screen.dart';
@@ -12,6 +13,7 @@ import 'package:unicorn_cafe/src/features/product_description/product_descriptio
 import 'package:unicorn_cafe/src/features/profile/profile_screen.dart';
 import 'package:unicorn_cafe/src/features/search/search_screen.dart';
 import 'package:unicorn_cafe/src/features/splash/splash_screen.dart';
+import 'package:unicorn_cafe/src/model/cart_model.dart';
 import 'package:unicorn_cafe/src/model/product_model.dart';
 
 part 'app_route.dart';
@@ -47,7 +49,7 @@ abstract class AppRouter {
         List<ProductModel>? products =
             settings.arguments as List<ProductModel>?;
         return MaterialPageRoute(
-          builder: (context) => ProductScreen(products: products), 
+          builder: (context) => ProductScreen(products: products),
         );
       case AppRoute.productDescriptionScreen:
         final ProductModel productModel = settings.arguments as ProductModel;
@@ -69,11 +71,16 @@ abstract class AppRouter {
         );
       case AppRoute.addressScreen:
         return MaterialPageRoute(
-          builder: (context) => const AddressScreen(),
+          builder: (context) =>
+              AddressScreen(orders: settings.arguments as List<CartModel>),
         );
       case AppRoute.searchScreen:
         return MaterialPageRoute(
           builder: (context) => const SearchScreen(),
+        );
+      case AppRoute.aboutUs:
+        return MaterialPageRoute(
+          builder: (context) => AboutUsScreen(title: settings.arguments as String),
         );
       default:
         return null;

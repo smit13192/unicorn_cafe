@@ -3,8 +3,18 @@ part of 'address_bloc.dart';
 abstract class AddressEvent extends Equatable {}
 
 class GetDefaultEvent extends AddressEvent {
+  final String username;
+  final String email;
+  final String mobileNo;
+
+  GetDefaultEvent({
+    required this.username,
+    required this.email,
+    required this.mobileNo,
+  });
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [username, email, mobileNo];
 }
 
 class UsernameChangeEvent extends AddressEvent {
@@ -31,55 +41,10 @@ class MobileNoChangeEvent extends AddressEvent {
   List<Object?> get props => [mobileno];
 }
 
-class PincodeChangeEvent extends AddressEvent {
-  final String pincode;
-  PincodeChangeEvent(this.pincode);
-
-  @override
-  List<Object?> get props => [pincode];
-}
-
-class CityChangeEvent extends AddressEvent {
-  final String city;
-  CityChangeEvent(this.city);
-
-  @override
-  List<Object?> get props => [city];
-}
-
-class StateChangeEvent extends AddressEvent {
-  final String state;
-  StateChangeEvent(this.state);
-
-  @override
-  List<Object?> get props => [state];
-}
-
-class AreaChangeEvent extends AddressEvent {
-  final String area;
-  AreaChangeEvent(this.area);
-
-  @override
-  List<Object?> get props => [area];
-}
-
-class FlatNameChangeEvent extends AddressEvent {
-  final String flatname;
-  FlatNameChangeEvent(this.flatname);
-
-  @override
-  List<Object?> get props => [flatname];
-}
-
-class AddressSaveChangeEvent extends AddressEvent {
-  final bool markAsDefault;
-  AddressSaveChangeEvent(this.markAsDefault);
-
-  @override
-  List<Object?> get props => [markAsDefault];
-}
-
 class SubmitEvent extends AddressEvent {
+  final List<CartModel> orders;
+  SubmitEvent(this.orders);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [orders];
 }

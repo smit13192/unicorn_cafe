@@ -2,30 +2,44 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unicorn_cafe/src/config/utils/either_result.dart';
 import 'package:unicorn_cafe/src/config/utils/formz_status.dart';
+import 'package:unicorn_cafe/src/model/cart_model.dart';
+import 'package:unicorn_cafe/src/services/firebase_auth_services.dart';
+import 'package:unicorn_cafe/src/services/firebase_cloud_services.dart';
 
 part 'address_event.dart';
 part 'address_state.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
-  AddressBloc() : super(AddressState.initState()) {
+  final FirebaseAuthService _firebaseAuthService;
+  final FirebaseCloudService _firebaseCloudService;
+
+  AddressBloc({
+    required FirebaseAuthService firebaseAuthService,
+    required FirebaseCloudService firebaseCloudService,
+  })  : _firebaseAuthService = firebaseAuthService,
+        _firebaseCloudService = firebaseCloudService,
+        super(const AddressState()) {
     on<GetDefaultEvent>(_getDefaultEvent);
     on<UsernameChangeEvent>(_usernameChangedEvent);
     on<EmailChangeEvent>(_emailChangedEvent);
     on<MobileNoChangeEvent>(_mobileNoChangedEvent);
-    on<PincodeChangeEvent>(_pincodeChangedEvent);
-    on<CityChangeEvent>(_cityChangesEvent);
-    on<StateChangeEvent>(_stateChangedEvent);
-    on<AreaChangeEvent>(_areaChangedEvent);
-    on<FlatNameChangeEvent>(_flatNameChangedEvent);
-    on<AddressSaveChangeEvent>(_addressSaveChangedEvent);
     on<SubmitEvent>(_submitEvent);
   }
 
   FutureOr<void> _getDefaultEvent(
     GetDefaultEvent event,
     Emitter<AddressState> emit,
-  ) {}
+  ) {
+    emit(
+      state.copyWith(
+        username: event.username,
+        email: event.email,
+        mobileNo: event.mobileNo,
+      ),
+    );
+  }
 
   FutureOr<void> _usernameChangedEvent(
     UsernameChangeEvent event,
@@ -48,50 +62,26 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     emit(state.copyWith(mobileNo: event.mobileno));
   }
 
-  FutureOr<void> _pincodeChangedEvent(
-    PincodeChangeEvent event,
-    Emitter<AddressState> emit,
-  ) {
-    emit(state.copyWith(pincode: event.pincode));
-  }
-
-  FutureOr<void> _cityChangesEvent(
-    CityChangeEvent event,
-    Emitter<AddressState> emit,
-  ) {
-    emit(state.copyWith(city: event.city));
-  }
-
-  FutureOr<void> _stateChangedEvent(
-    StateChangeEvent event,
-    Emitter<AddressState> emit,
-  ) {
-    emit(state.copyWith(state: event.state));
-  }
-
-  FutureOr<void> _areaChangedEvent(
-    AreaChangeEvent event,
-    Emitter<AddressState> emit,
-  ) {
-    emit(state.copyWith(area: event.area));
-  }
-
-  FutureOr<void> _flatNameChangedEvent(
-    FlatNameChangeEvent event,
-    Emitter<AddressState> emit,
-  ) {
-    emit(state.copyWith(flat: event.flatname));
-  }
-
-  FutureOr<void> _addressSaveChangedEvent(
-    AddressSaveChangeEvent event,
-    Emitter<AddressState> emit,
-  ) {
-    emit(state.copyWith(save: event.markAsDefault));
-  }
-
   FutureOr<void> _submitEvent(
     SubmitEvent event,
     Emitter<AddressState> emit,
-  ) {}
+  ) async {
+    emit(state.copyWith(status: FormzStatus.loading));
+    String uid = _firebaseAuthService.uid;
+    EitherResult<bool> orderResult = await _firebaseCloudService.saveOrders(
+      uid,
+      state.email,
+      DateTime.now(),
+      orders: event.orders,
+      addressData: state.toMap(),
+    );
+    orderResult.fold(
+      (l) {
+        emit(state.copyWith(status: FormzStatus.failed, error: l));
+      },
+      (r) {
+        emit(state.copyWith(status: FormzStatus.success));
+      },
+    );
+  }
 }
