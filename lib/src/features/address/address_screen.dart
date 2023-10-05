@@ -108,7 +108,7 @@ class _AddressViewState extends State<_AddressView> {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Add Address',
+            'Confirm Order',
             style: TextStyle(
               color: AppColor.primaryColor,
               fontSize: 22,
